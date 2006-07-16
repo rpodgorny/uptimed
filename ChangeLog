@@ -1,17 +1,24 @@
+0.3.6
+-----
+
+- patch by Thibaut Varene <t-bone@parisc-linux.org>: add darwin support
+  (define it as BSD system).
+
 0.3.5
 -----
 
-- version numbers should now be correct
+- version numbers should now be correct.
 
 0.3.4
 -----
 
-- patch by Radek Podgorny: add a dont-fork option
+- patch by Radek Podgorny <radek@podgorny.cz>: add a "don't fork" option.
+- this is the first release under maintainership of Radek Podgorny.
 
 0.3.3
 -----
 
-- patch by Brett: allow sorting uprecords output
+- patch by Brett: allow sorting uprecords output.
 
 0.3.2
 -----

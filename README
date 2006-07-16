@@ -48,10 +48,8 @@ accidentely killing Uptimed or running multiple instances of it.
 
 For a list of contributors to Uptimed, please read the CREDITS file.
 
-5. Contacting the author
-========================
+5. Contacting the author/maintainer
+===================================
 
-Suggestions, questions, comments: <uptimed-friends@lists.capsi.com>
-Bug fixes, patches: <uptimed-devel@lists.capsi.com>
-Flames: Rob Kaper <rob@unixcode.org>
-Currently maintained by: Radek Podgorny <radek@podgorny.cz>
+Suggestions, questions, comments, bugfixes, patches: <radek@podgorny.cz>
+Original maintainer and author: Rob Kaper <rob@unixcode.org>

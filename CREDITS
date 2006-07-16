@@ -24,3 +24,8 @@ Ted Rolle <ted@acacia.datacomm.com>
 Ademar de Souza Reis Jr. <ademar@linuxbr.com.br>
 	(little bugfix in saving uprecords)
 
+Radek Podgorny <radek@podgorny.cz>
+	(patch to add the "don't fork" option)
+
+Thibaut Varene <t-bone@parisc-linux.org>
+	(patch to add support for darwin)
