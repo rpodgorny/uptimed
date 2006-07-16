@@ -29,3 +29,6 @@ Radek Podgorny <radek@podgorny.cz>
 
 Thibaut Varene <t-bone@parisc-linux.org>
 	(patch to add support for darwin)
+
+Michael Ploujnikov <ploujj@gmail.com>
+	(reminded me how much autotools suck ;-) )

@@ -17547,7 +17547,7 @@ fi
 
 # Define the identity of the package.
 PACKAGE=uptimed
-VERSION=0.3.6
+VERSION=0.3.7
 
 cat >>confdefs.h <<_ACEOF
 #define PACKAGE "$PACKAGE"
