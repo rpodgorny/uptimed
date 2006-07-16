@@ -1,0 +1,68 @@
+.TH UPRECORDS 1 "June 20, 2004"
+.nh
+
+.SH NAME
+uprecords \- provides uptime records
+
+.SH SYNOPSIS
+.B uprecords
+[ \fB-?abBcfkKMsv\fP ] [ \fB-i\fP <interval> ] [ \fB-m\fP <count> ]
+
+.SH DESCRIPTION
+This manual page documents the
+.B uprecords
+program.
+.PP
+.B uprecords
+is a program that provides record statistics from the
+.B uptimed(8)
+program.
+
+.SH OPTIONS
+.TP
+.B \-?
+Show usage
+.TP
+.B \-a
+Do not print ANSI codes
+.TP
+.B \-b -B
+Sort by time of bootup, oldest entry first. -B reverses. Option implies \-s.
+Do not print ANSI codes
+.TP
+.B \-c
+Do not show current entry if not in top entries
+.TP
+.B \-f
+Run continuously in a loop
+.TP
+.B \-k -K
+Sort by kernel/system name. -K reverses. Option implies \-s.
+.TP
+.B \-M
+Show next milestone
+.TP
+.B \-s
+Do not print extra statistics
+.TP
+\fB\-i\fP <interval>
+Use <interval> seconds for loop instead of 5, implies -f
+.TP
+\fB\-m\fP <count>
+Show a maximum of top COUNT entries instead of 10
+.TP
+.B \-v
+Show version information
+
+.SH SEE ALSO
+.BR uptimed (8)
+.br
+
+.SH AUTHOR
+Rob Kaper <cap@capsi.com>.
+
+This manual page was written by Alan Ford <alan@whirlnet.co.uk>, for the
+Debian GNU/Linux system (but may be used by others). It was last modified
+for
+.B uptimed
+version 0.3.3.

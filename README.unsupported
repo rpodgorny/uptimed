@@ -1,0 +1,69 @@
+Contents
+========
+
+1. My platform is listed as unsupported. What to do now?
+2. Support status for various platforms
+3. Getting the uptime on unsupported platforms
+
+1. My platform is unsupported. What to do now?
+==============================================
+
+First of all, do not panic. Chances are that uptimed will work on your
+platform with little or no modifications.
+
+There are basically three reasons why your platform could be unsupported:
+
+- I have insufficient knowledge to get my code to compile,
+- I have insufficient knowledge how to get your platform's uptime,
+- I have insufficient knowledge of your platforms startup process and files
+
+2. Support status for various platforms
+=======================================
+
+BSD (other than FreeBSD)
+------------------------
+
+If someone can tell me the /usr/local/etc/rc.d equivalent for other BSD
+systems, these can be officially supported. Thanks!
+
+HP/UX
+-----
+
+Uptimed now works and compiles on HP/UX (at least under 10.20) with thanks
+to patches from Helge Deller <deller@gmx.de>. Not being an expert on HP/UX
+startup files, any help is very welcome here. Currently /sbin/rc is used:
+find the following part at the end of /sbin/rc and insert the lines
+commented with "insert me!".
+
+---- /sbin/rc ----
+# Output message to indicate completion
+#
+echo
+if [ $BOOT = 1 ]; then
+	echo "Creating unique uptime daemon bootid..."	# insert me !
+	/usr/local/sbin/uptimed -b			# insert me !
+	echo "Start uptimed..."				# insert me !
+	/usr/local/sbin/uptimed				# insert me !
+	echo "The system is ready."
+else
+---- /sbin/rc ----
+
+3. Getting the uptime on unsupported platforms
+----------------------------------------------
+
+I have written a quick and inaccurate hack calculating the uptime from the
+current time and the timestamp made at boottime.
+
+This is very portable and thus will also let uptimed run on platforms where
+I do not know of how to get the real uptime.
+
+However, this is also very inaccurate, because:
+
+1) the boottime timestamp can be extremely delayed due to fscking etc.
+2) when the system time changes (for example timezone changes) the
+   boottime timestamp does not, creating even more inaccuracy.
+
+However, this hack should at least _work_.
+
+If you can send me <rob@unixcode.org> any information on how to get the
+uptime on your platform, it will be appreciated very much.

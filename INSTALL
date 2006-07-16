@@ -1,0 +1,120 @@
+Contents
+========
+
+1. Compiling the sources
+2. Installing the binaries
+3. Editing your system startup files
+   a) Creating the boot id at startup
+   b) Running Uptimed in the background
+4. Configuration of Uptimed
+5. Examining the logfiles
+
+1. Compiling the sources
+========================
+
+Type './configure && make'. This should create two binaries, 'uptimed' and
+'uprecords'. Make sure you use GNU make on BSD systems, often installed as
+'gmake'.
+
+If the source does not compile, send a message to
+uptimed-devel@lists.capsi.com with the compile errors. Of course you are
+free to send some patches as well.
+
+2. Installing the binaries
+==========================
+
+As root, type 'make install'. This will create a spool directory for Uptimed
+and place the Uptimed binary in /usr/local/sbin, and the uprecords binary in
+/usr/local/bin. If you are upgrading from a previous version, read the
+INSTALL.upgrade file too.
+
+3. Editing your system startup files
+====================================
+
+a) Creating the bootid at startup
+---------------------------------
+
+This step is not required for BSD systems.
+
+To start the program automatically every time you start up your computer,
+add the following lines to your computers startup file for runlevel S.
+
+echo "Creating unique uptime daemon bootid..."
+/usr/local/sbin/uptimed -b
+
+The right procedure varies per platform and distribution:
+
+- Slackware Linux:
+  Add it somewhere in /etc/rc.d/rc.S
+
+- RedHat Linux:
+  Add it somewhere in /etc/rc.d/rc.sysinit
+
+- Debian Linux:
+  Put it in a file in /etc/init.d/ and symlink it from /etc/rc.S
+
+- Solaris:
+  Put it in a file in /etc/init.d/ and symlink it from /etc/rcS.d
+
+- HP/UX:
+  See README.unsupported file.
+
+The -b flag is essential: it updates the /var/spool/uptimed/bootid file
+resulting in a unique id per boottime. This must be done in rc.S and not in
+rc.local to make sure the bootid stays intact even when switching runlevels.
+When using the -b flag, Uptimed exits on purpose.
+
+b) Running Uptimed in the background
+------------------------------------
+
+To make sure you always have Uptimed running during normal system operation,
+add the following lines to your systems multi-user runlevel configuration
+file:
+
+echo "Starting uptime daemon..."
+/usr/local/sbin/uptimed
+   
+- Linux:
+  Add it somewhere in /etc/rc.d/rc.local
+
+- Solaris:
+  Put it in a file in /etc/init.d/ and symlink it from /etc/rc2.d
+
+- FreeBSD:
+  Put it in a .sh script in /usr/local/etc/rc.d
+
+- HP/UX and BSD:
+  See README.unsupported file.
+
+The reason there are two steps is because the boottime for most platforms is
+calculated as system time minus uptime. This, unfortunately, is not a
+constant. The current system time might be updated by applications such as
+ntpd or rdate and timezone changes, making it unreliable as part of a unique
+id. Therefore it must be stored at boot time, once, for later use.
+
+The actual daemon however should not be started at only at boot time, because
+you will want it up and running again when for example you come back from
+single user mode.
+
+So far having the -b switch and using a two-part startup process is the only
+solution I have come up with that works - apart from kernel patches to have
+a constant (and not calculated) boot time entry, which wouldn't be very
+cross-platform.
+
+4. Configuration of Uptimed
+---------------------------
+
+The installation process installs a file called 'uptimed.conf-dist'. Edit
+its entries to your own satisfaction and save your changes as
+'uptimed.conf'.
+
+Uptimed will run perfectly with default configuration values without a
+'uptimed.conf' configuration file and also accepts various command-line
+arguments to overwrite both default values and configuration options.
+
+5. Examining the logfiles
+-------------------------
+
+To see the records, type 'uprecords'. The current session will be
+highlighted. You will probably only see one entry the first time you run the
+program. If that bothers you, reboot a few times. ;-)
