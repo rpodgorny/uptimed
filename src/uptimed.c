@@ -30,7 +30,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 
 Urec *u_current = NULL;
 int our_pos=0;
-int update_interval=60, create_bootid=0, send_email=0;
+int update_interval=60, create_bootid=0, send_email=0, foreground=0;
 time_t log_min_uptime = 0, mail_min_uptime = 0;
 unsigned int log_max_entries = 50, mail_min_position = 10;
 char email[EMAIL+1], sendmail[EMAIL+1], pidfile[EMAIL+1];
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
  	signal(SIGTERM,handler);
  
 	/* Now run in the background. */
-	bg();
+	if (!foreground) bg();
 
 	{
 		FILE *pidf;
@@ -319,7 +319,7 @@ void scan_args(int argc, char *argv[])
 {
 	int index;
 
-	while((index = getopt(argc, argv, "e:i:m:p:t:?bv")) != EOF)
+	while((index = getopt(argc, argv, "e:i:m:p:t:?bfv")) != EOF)
 	{
 		switch(index)
 		{
@@ -328,6 +328,9 @@ void scan_args(int argc, char *argv[])
 				break;
 			case 'v':
 				print_version();
+				break;
+			case 'f':
+				foreground = 1;
 				break;
 			case 'e':
 				strcpy(email, optarg);
@@ -383,6 +386,7 @@ void print_help(char *argv[])
 	printf("commandline options override settings from configuration file\n\n");
 	printf("  -?             this help\n");
 	printf("  -b             create bootid and exit [ignored on FreeBSD]\n");
+	printf("  -f             run in foreground [don't fork]\n");
 	printf("  -e EMAIL       send mail to EMAIL at milestones/records\n");
 	printf("  -i INTERVAL    use INTERVAL seconds for loop\n");
 	printf("  -m COUNT       log a maximum of COUNT entries\n");
