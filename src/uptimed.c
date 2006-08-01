@@ -218,7 +218,7 @@ void cheer(Milestone *milestone, int position)
 		syslog(LOG_INFO, SYSLOG_PREFIX "milestone: %s (%s)", time2uptime(milestone->time), milestone->desc);
 
 	/* Send email if it's requested. */
-	if ((u_current->utime > mail_min_uptime) && (!position || (position >= mail_min_position)) && (send_email==1 || (send_email==2 && milestone) || (send_email==3 && position)) && email[0])
+	if ((u_current->utime > mail_min_uptime) && (!position || (position <= mail_min_position)) && (send_email==1 || (send_email==2 && milestone) || (send_email==3 && position)) && email[0])
 		mail(milestone, position);
 }
 
