@@ -42,7 +42,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #ifdef PLATFORM_HPUX
 #include <unistd.h>
 #include <sys/param.h>
-extern void snprintf(char *,...);
+extern void snprintf(char *, ...);
 #define _INCLUDE_HPUX_SOURCE
 #include <sys/pstat.h>
 #endif
@@ -53,14 +53,13 @@ extern void snprintf(char *,...);
 
 #include "misc.h"
 
-#define FILE_BOOTID             "/var/spool/uptimed/bootid"
-#define FILE_RECORDS		"/var/spool/uptimed/records"
+#define FILE_BOOTID "/var/spool/uptimed/bootid"
+#define FILE_RECORDS "/var/spool/uptimed/records"
 
-typedef struct urec
-{
-	time_t	utime; /* uptime */
-	time_t	btime; /* time of boot up */
-	char	sys[SYSMAX+1]; /* system type */
+typedef struct urec {
+	time_t utime; /* uptime */
+	time_t btime; /* time of boot up */
+	char sys[SYSMAX+1]; /* system type */
 	struct urec *next;
 } Urec;
 
