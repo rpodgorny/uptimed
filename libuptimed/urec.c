@@ -214,6 +214,7 @@ void read_records(time_t current)
 	FILE *f;
 	char str[256];
 	time_t utime, btime;
+	long l_utime, l_btime;
 	char buf[256], sys[SYSMAX+1];
 	
 	f=fopen(FILE_RECORDS, "r");
@@ -224,12 +225,15 @@ void read_records(time_t current)
 	while(!feof(f))
 	{
 		/* Check for validity of input string. */
-		if (sscanf(str, "%ld:%ld:%[^]\n]", &utime, &btime, buf)!=3)
+		if (sscanf(str, "%ld:%ld:%[^]\n]", &l_utime, &l_btime, buf)!=3)
 		{
 			/* Skip this entry. Do we want feedback here? */
 		}
 		else
 		{
+			utime = (time_t)l_utime;
+			btime = (time_t)l_btime;
+
 			strncpy(sys, buf, SYSMAX);
 			sys[SYSMAX]='\0';
 			if (utime>0 && btime!=current)
