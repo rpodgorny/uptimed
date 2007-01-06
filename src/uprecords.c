@@ -265,6 +265,7 @@ void read_config_cgi(void)
 void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, int hilite)
 {
 	char *bold = BOLD, *plain = PLAIN, *current = "";
+	char *ctimec = NULL;
 
 	if (runas_cgi)
 	{
@@ -316,10 +317,12 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 				printf("<li>%s%s %s at %s%s", bold, ident, time2uptime(utime), ctime(&btime), plain);
 			break;
 		default:
+			if((ctimec = ctime(&btime)))
+				ctimec[strlen(ctimec)-1] = '\0';	/* erase the ending '\n' */
 			if (pos)
-				printf("%s%3s%3d %20s %s|%s %-*s %*s%s", bold, ident, pos, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctime(&btime), plain);
+				printf("%s%3s%3d %20s %s|%s %-*s %*s%s\n", bold, ident, pos, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctimec, plain);
 			else
-				printf("%s%6s %20s %s|%s %-*s %*s%s", bold, ident, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctime(&btime), plain);
+				printf("%s%6s %20s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctimec, plain);
 	}
 }
 
