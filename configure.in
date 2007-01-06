@@ -4,7 +4,7 @@ AC_INIT(src)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AM_PROG_LIBTOOL
-AM_INIT_AUTOMAKE(uptimed, 0.3.8)
+AM_INIT_AUTOMAKE(uptimed, 0.3.9)
 
 case "$host" in
   *-linux*)
