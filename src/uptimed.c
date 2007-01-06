@@ -399,6 +399,7 @@ void print_help(char *argv[])
 void print_version(void)
 {
 	printf("uptimed " VERSION " by Rob Kaper <rob@unixcode.org>\n");
+	printf("enhanced and maintained by Radek Podgorny <radek@podgorny.cz>");
 	exit(0);
 }
 
