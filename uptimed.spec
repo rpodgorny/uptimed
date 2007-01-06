@@ -1,5 +1,5 @@
 %define name	uptimed
-%define ver	0.3.8
+%define ver	0.3.9
 %define rel	0
 
 Summary		: A daemon to record and keep track of system uptimes
