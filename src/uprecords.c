@@ -22,10 +22,12 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include <getopt.h>
 #endif
 
+#define SYSWIDTH 24
+
 Urec	*u_current;
 time_t	first, prev;
 int		runas_cgi=0, show_max=10, show_milestone=0, layout=PRE, run_loop=0, update_interval=5;
-int		sort_by=0, no_ansi=0, no_stats=0, no_current=0;
+int		sort_by=0, no_ansi=0, no_stats=0, no_current=0, wide_out=0;
 
 int main(int argc, char *argv[])
 {
@@ -114,7 +116,7 @@ void displayrecords(int cls)
 
 	if (layout==PRE)
 	{
-		printf("   %3s %20s | %-*s %*s\n", "#", "Uptime", SYSMAX, "System", TIMEMAX, "Boot up ");
+		printf("   %3s %20s | %-*s %*s\n", "#", "Uptime", SYSWIDTH, "System", TIMEMAX, "Boot up");
 		print_line();
 	}
 	else if (runas_cgi && layout==TABLE)
@@ -318,24 +320,26 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 			break;
 		default:
 			if((ctimec = ctime(&btime)))
-				ctimec[strlen(ctimec)-1] = '\0';	/* erase the ending '\n' */
+				ctimec[TIMEMAX-1] = '\0';	/* erase the ending '\n' */
+			if (!wide_out && strlen(sys) > SYSWIDTH)
+				sys[SYSWIDTH] = '\0';		/* truncate for 80 cols */
 			if (pos)
-				printf("%s%3s%3d %20s %s|%s %-*s %*s%s\n", bold, ident, pos, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctimec, plain);
+				printf("%s%3s%3d %20s %s|%s %-*s %*s%s\n", bold, ident, pos, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
 			else
-				printf("%s%6s %20s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSMAX, sys, TIMEMAX, ctimec, plain);
+				printf("%s%6s %20s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
 	}
 }
 
 void print_line(void)
 {
-	printf("----------------------------+-------------------------------------------------\n");
+	printf("----------------------------+---------------------------------------------------\n");
 }
 
 void scan_args(int argc, char *argv[])
 {
 	int i;
 
-	while((i = getopt(argc, argv, "i:m:?acbBkKfsMv")) != EOF)
+	while((i = getopt(argc, argv, "i:m:?acbBkKfsMwv")) != EOF)
 	{
 		switch(i)
 		{
@@ -370,6 +374,9 @@ void scan_args(int argc, char *argv[])
 				case 's':
 						no_stats++;
 						break;
+				case 'w':
+						wide_out++;
+						break;
 				case 'v':
 						print_version();
 						break;
@@ -401,7 +408,7 @@ void scan_args(int argc, char *argv[])
 
 void print_usage(char *argv[])
 {
-	printf("usage: %s [-?acfMsv] [-i interval] [-m count]\n", argv[0]);
+	printf("usage: %s [-?acfMswv] [-i interval] [-m count]\n", argv[0]);
 	exit(1);
 }
 
@@ -417,6 +424,7 @@ void print_help(char *argv[])
 	printf("  -c             do not show current entry if not in top entries\n");
 	printf("  -f             run continously in a loop\n");
 	printf("  -s             do not print extra statistics\n");
+	printf("  -w             wide output (more than 80 cols per line\n");
 	printf("  -i INTERVAL    use INTERVAL seconds for loop instead of 5, implies -f\n");
 	printf("  -m COUNT       show a maximum of top COUNT entries instead of 10\n");
 	printf("  -M             show next milestone\n");

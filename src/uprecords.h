@@ -35,6 +35,9 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #define	LIST	2
 #define	TABLE	3
 
+/* ctime returns a pointer to a 26-character string of the form:
+           Thu Nov 24 18:22:48 1986\n\0
+   of which we'll replace the \n by '\0', hence the 25 length */
 #define	TIMEMAX	25
 
 int main(int, char *[]);

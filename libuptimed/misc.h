@@ -20,7 +20,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include <string.h>
 #include <stdlib.h>
 
-#define	SYSMAX	24
+#define	SYSMAX	256
 
 char *time2uptime (time_t t);
 void read_homedir(void);
