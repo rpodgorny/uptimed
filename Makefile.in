@@ -82,6 +82,7 @@ OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 RC = @RC@
+SED = @SED@
 STRIP = @STRIP@
 VERSION = @VERSION@
 am__include = @am__include@
