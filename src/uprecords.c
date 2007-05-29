@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 void displayrecords(int cls)
 {
 	Urec *u, *uprev=NULL;
-	time_t now, tmp;
+	time_t since, now, tmp, totalutime = 0, totaldtime = 0;
 	int	i=0, currentdone=0;
 	
 	now=time(0);
@@ -134,6 +134,7 @@ void displayrecords(int cls)
 			if (u==u_current)
 			{
 				print_entry(u->utime, u->sys, u->btime, "-> ", i, 1);
+				print_downtime(u->dtime, 1);
 				currentdone++;
 				if (uprev) prev=uprev->utime;
 				else
@@ -144,6 +145,7 @@ void displayrecords(int cls)
 			else
 			{
 				print_entry(u->utime, u->sys, u->btime, "   ", i, 0);
+				print_downtime(u->dtime, 0);
 				if (i==1) first=u->utime;
 			}
 		}
@@ -196,6 +198,21 @@ void displayrecords(int cls)
 				print_entry(m->time - u_current->utime + 1, m->desc, tmp, "mst in", 0, 0);
 			}
 		}
+		
+		/* Printing total uptime and downtime. */	
+		for (u = urec_list; u; u = u->next){
+			totalutime += u->utime;
+		}
+
+		for (u = urec_list; u; u = u->next){
+			if (u->dtime == 0) {
+				since = u->btime;	
+			}
+			totaldtime += u->dtime;
+		}
+		
+		print_entry(totalutime, "since", since, "up", 0, 0);
+		print_entry(totaldtime, "since", since, "down", 0, 0);
 	}
 
 	/* End output for CGI. */
@@ -328,6 +345,23 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 			else
 				printf("%s%6s %20s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
 	}
+}
+
+void print_downtime(time_t dtime, int hilite) 
+{
+	char *bold = BOLD, *plain = PLAIN;
+	
+	if (dtime == 0) {
+		return;
+	}
+	
+	if (!hilite || no_ansi)
+	{
+		bold = "";
+		plain = "";
+	}
+	
+	printf("%s%6s %20s %s|\n", bold, "down", time2uptime(dtime), plain);
 }
 
 void print_line(void)

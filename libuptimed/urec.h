@@ -59,6 +59,7 @@ extern void snprintf(char *, ...);
 typedef struct urec {
 	time_t utime; /* uptime */
 	time_t btime; /* time of boot up */
+	time_t dtime; /* downtime */
 	char sys[SYSMAX+1]; /* system type */
 	struct urec *next;
 } Urec;
@@ -71,6 +72,7 @@ void del_urec(Urec *urec);
 void moveup(void);
 char *read_sysinfo(void);
 time_t read_uptime(void);
+void calculate_downtime(void);
 void read_records(time_t);
 void save_records(int, time_t);
 #ifndef PLATFORM_BSD

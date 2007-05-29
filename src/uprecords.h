@@ -46,6 +46,7 @@ void read_config(void);
 void read_config_cgi(void);
 void print_entry(time_t, char *, time_t, char *, int, int);
 void print_line(void);
+void print_downtime(time_t dtime, int hilite);
 void scan_args(int, char *[]);
 void print_usage(char *[]);
 void print_help(char *[]);

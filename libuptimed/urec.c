@@ -194,6 +194,22 @@ time_t read_uptime(void) {
 }
 #endif
 
+void calculate_downtime(void) {
+	Urec *u, *sorted_list = sort_urec(urec_list, -1);
+
+	for (u = sorted_list; u; u = u->next)
+	{
+		if (u->next) {
+			 u->dtime = u->btime - (u->next->btime + u->next->utime);
+		} else { /* First uptime recorded... No prior downtime data. */
+			u->dtime = 0;
+		}
+	}
+
+	urec_list = sort_urec(sorted_list, 0);
+}
+
+
 void read_records(time_t current) {
 	FILE *f;
 	char str[256];
@@ -220,6 +236,8 @@ void read_records(time_t current) {
 		fgets(str, sizeof(str), f);
 	}
 	fclose(f);
+	
+	calculate_downtime();
 }
 
 void save_records(int max, time_t log_threshold) {
@@ -378,7 +396,9 @@ time_t readbootid(void) {
 }
 
 int compare_urecs(Urec *a, Urec *b, int sort_by) {
-	if (sort_by == 1) {
+	if (sort_by == 0) {
+		return b->utime - a->utime;
+	} else if (sort_by == 1) {
 		return a->btime - b->btime;
 	} else if (sort_by == -1) {
 		return b->btime - a->btime;
