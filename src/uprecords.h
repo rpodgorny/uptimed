@@ -39,14 +39,16 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
            Thu Nov 24 18:22:48 1986\n\0
    of which we'll replace the \n by '\0', hence the 25 length */
 #define	TIMEMAX	25
+#define	DOWNTIMEMAXWIDTH	29
 
 int main(int, char *[]);
 void displayrecords(int);
 void read_config(void);
 void read_config_cgi(void);
 void print_entry(time_t, char *, time_t, char *, int, int);
+void print_downtime_entry(time_t utime, time_t dtime, time_t btime, char *ident, int pos, int hilite);
 void print_line(void);
-void print_downtime(time_t dtime, int hilite);
+void print_availability(float percent, time_t since);
 void scan_args(int, char *[]);
 void print_usage(char *[]);
 void print_help(char *[]);
