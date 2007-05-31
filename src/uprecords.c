@@ -23,10 +23,11 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #endif
 
 #define SYSWIDTH 24
+#define DOWNWIDTH 20
 
 Urec	*u_current;
 time_t	first, prev;
-int		runas_cgi=0, show_max=10, show_milestone=0, layout=PRE, run_loop=0, update_interval=5;
+int		runas_cgi=0, show_max=10, show_milestone=0, layout=PRE, show_downtime=0, run_loop=0, update_interval=5;
 int		sort_by=0, no_ansi=0, no_stats=0, no_current=0, wide_out=0;
 
 int main(int argc, char *argv[])
@@ -96,6 +97,7 @@ void displayrecords(int cls)
 {
 	Urec *u, *uprev=NULL;
 	time_t since, now, tmp, totalutime = 0, totaldtime = 0;
+	float availability;
 	int	i=0, currentdone=0;
 	
 	now=time(0);
@@ -116,14 +118,22 @@ void displayrecords(int cls)
 
 	if (layout==PRE)
 	{
-		printf("   %3s %20s | %-*s %*s\n", "#", "Uptime", SYSWIDTH, "System", TIMEMAX, "Boot up");
+		if (!show_downtime) {
+			printf("   %3s %20s | %-*s %*s\n", "#", "Uptime", SYSWIDTH, "System", TIMEMAX, "Boot up");
+		} else {
+			printf("   %3s %20s | %*s %*s\n", "#", "Uptime", DOWNWIDTH, "Last downtime", DOWNTIMEMAXWIDTH, "Boot up");
+		}
 		print_line();
 	}
 	else if (runas_cgi && layout==TABLE)
 	{
 		printf("<th>%s</th>\n", "Position");
 		printf("<th>%s</th>\n", "Uptime");
-		printf("<th>%s</th>\n", "System");
+		if (!show_downtime) {
+			printf("<th>%s</th>\n", "System");
+		} else {
+			printf("<th>%s</th>\n", "Last downtime");
+		}
 		printf("<th>%s</th>\n", "Boot up");
 	}
 
@@ -133,8 +143,11 @@ void displayrecords(int cls)
 		{
 			if (u==u_current)
 			{
-				print_entry(u->utime, u->sys, u->btime, "-> ", i, 1);
-				print_downtime(u->dtime, 1);
+				if (!show_downtime) {
+					print_entry(u->utime, u->sys, u->btime, "-> ", i, 1);
+				} else {
+					print_downtime_entry(u->utime, u->dtime, u->btime, "-> ", i, 1);
+				}
 				currentdone++;
 				if (uprev) prev=uprev->utime;
 				else
@@ -144,8 +157,11 @@ void displayrecords(int cls)
 			}
 			else
 			{
-				print_entry(u->utime, u->sys, u->btime, "   ", i, 0);
-				print_downtime(u->dtime, 0);
+				if (!show_downtime) {
+					print_entry(u->utime, u->sys, u->btime, "   ", i, 0);
+				} else {
+					print_downtime_entry(u->utime, u->dtime, u->btime, "   ", i, 0);
+				}
 				if (i==1) first=u->utime;
 			}
 		}
@@ -201,18 +217,19 @@ void displayrecords(int cls)
 		
 		/* Printing total uptime and downtime. */	
 		for (u = urec_list; u; u = u->next){
-			totalutime += u->utime;
-		}
-
-		for (u = urec_list; u; u = u->next){
 			if (u->dtime == 0) {
 				since = u->btime;	
 			}
 			totaldtime += u->dtime;
+			totalutime += u->utime;
 		}
 		
 		print_entry(totalutime, "since", since, "up", 0, 0);
 		print_entry(totaldtime, "since", since, "down", 0, 0);
+		
+		/* Printing availability. */
+		availability = (float)totalutime / (float)(totalutime + totaldtime) * 100;
+		print_availability(availability, since);
 	}
 
 	/* End output for CGI. */
@@ -276,6 +293,13 @@ void read_config_cgi(void)
 		}
 		else if (!strncmp(str, "SHOW_MAX", 8))
 			show_max=atoi(str+9);
+		else if (!strncmp(str, "TYPE", 4)) 
+		{
+			if (!strncmp(str+5, "system", 6))
+				show_downtime = 0;
+			else if (!strncmp(str+5, "downtime", 8))
+				show_downtime = 1;
+		}
 		fgets(str, sizeof(str), f);
 	}
 	fclose(f);
@@ -333,7 +357,7 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 			else if (pos)
 				printf("<li>%s%s, %s, %s%s%s", bold, time2uptime(utime), sys, ctime(&btime), plain, current);
 			else
-				printf("<li>%s%s %s at %s%s", bold, ident, time2uptime(utime), ctime(&btime), plain);
+				printf("<li>%s%s %s %s %s%s", bold, ident, time2uptime(utime), sys, ctime(&btime), plain);
 			break;
 		default:
 			if((ctimec = ctime(&btime)))
@@ -347,21 +371,97 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 	}
 }
 
-void print_downtime(time_t dtime, int hilite) 
+void print_downtime_entry(time_t utime, time_t dtime, time_t btime, char *ident, int pos, int hilite)
 {
-	char *bold = BOLD, *plain = PLAIN;
-	
-	if (dtime == 0) {
-		return;
+	char *bold = BOLD, *plain = PLAIN, *current = "";
+	char *ctimec = NULL;
+	char timebuf[20] = "", dtimebuf[20] = "";
+
+	strcpy(timebuf, time2uptime(utime));
+	strcpy(dtimebuf, time2uptime(dtime));
+
+	if (runas_cgi)
+	{
+		bold = "<b>";
+		plain = "</b>";
+		
+		if (hilite)
+			current = " (current)";
+
+		if (!strcmp(ident, "-> "))
+			ident="-&gt; ";
 	}
-	
+
 	if (!hilite || no_ansi)
 	{
 		bold = "";
 		plain = "";
 	}
+
+	switch(layout)
+	{
+		case TABLE:
+			printf("<tr>\n");
+			if (pos)
+				printf("<td>%s%d%s%s</td>\n", bold, pos, plain, current);
+			else
+				printf("<td>%s</td>\n", ident);
+
+			printf("<td>%s%s%s</td>\n", bold, timebuf, plain);
+			printf("<td>%s%s%s</td>\n", bold, dtimebuf, plain);
+			printf("<td>%s%s%s</td>\n", bold, ctime(&btime), plain);
+
+			printf("</tr>\n");
+			break;
+		case LIST:
+			if (pos>show_max)
+				printf("<li>%s%s, %s, %s%s%s (position %d)", bold, timebuf, dtimebuf, ctime(&btime), plain, current, pos);
+			else if (pos)
+				printf("<li>%s%s, %s, %s%s%s", bold, timebuf, dtimebuf, ctime(&btime), plain, current);
+			else
+				printf("<li>%s%s %s at %s%s", bold, ident, timebuf, ctime(&btime), plain);
+			break;
+		default:
+			if((ctimec = ctime(&btime)))
+				ctimec[TIMEMAX-1] = '\0';	/* erase the ending '\n' */
+			if (pos) {
+				printf("%s%3s%3d %20s %s|%s %*s %*s%s\n", bold, ident, pos, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
+			} else {
+				printf("%s%6s %20s %s|%s %*s %*s%s\n", bold, ident, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
+			}
+	}
+}
+
+void print_availability(float percent, time_t since)
+{
+	char *ctimec = NULL, *msg = "%up";
 	
-	printf("%s%6s %20s %s|\n", bold, "down", time2uptime(dtime), plain);
+	if (runas_cgi) {		
+		if (layout!=PRE) {
+			msg = "Availability (%)";
+		}
+	}
+	
+	switch(layout)
+	{
+		case TABLE:
+			printf("<tr>\n");
+			printf("<td>%s</td>\n", msg);
+			printf("<td>%.3f</td>\n", percent);
+			printf("<td>since</td>\n");
+			printf("<td>%s</td>\n", ctime(&since));
+
+			printf("</tr>\n");
+			break;
+		case LIST:
+				printf("<li>%s %.3f since %s", msg, percent, ctime(&since));
+			break;
+		default:
+			if (ctimec = ctime(&since)) {
+				ctimec[TIMEMAX-1] = '\0';	/* erase the ending '\n' */
+			}	
+			printf("%6s %20.3f | %-*s %*s\n", msg, percent, SYSWIDTH, "since", TIMEMAX, ctimec);
+	}
 }
 
 void print_line(void)
@@ -373,7 +473,7 @@ void scan_args(int argc, char *argv[])
 {
 	int i;
 
-	while((i = getopt(argc, argv, "i:m:?acbBkKfsMwv")) != EOF)
+	while((i = getopt(argc, argv, "i:m:?acbdBkKfsMwv")) != EOF)
 	{
 		switch(i)
 		{
@@ -398,6 +498,9 @@ void scan_args(int argc, char *argv[])
 				case 'K':
 						sort_by = -2;
 						no_stats++;
+						break;
+				case 'd':
+						show_downtime++;
 						break;
 				case 'c':
 						no_current++;
@@ -442,7 +545,7 @@ void scan_args(int argc, char *argv[])
 
 void print_usage(char *argv[])
 {
-	printf("usage: %s [-?acfMswv] [-i interval] [-m count]\n", argv[0]);
+	printf("usage: %s [-?acdfMswv] [-i interval] [-m count]\n", argv[0]);
 	exit(1);
 }
 
@@ -455,6 +558,7 @@ void print_help(char *argv[])
 	printf("  -B             reverse sort by boottime\n");
 	printf("  -k             sort by sysinfo\n");
 	printf("  -K             reverse sort by sysinfo\n");
+	printf("  -d             print downtime seen before every uptimes instead of system\n");
 	printf("  -c             do not show current entry if not in top entries\n");
 	printf("  -f             run continously in a loop\n");
 	printf("  -s             do not print extra statistics\n");
