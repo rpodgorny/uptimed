@@ -7,4 +7,4 @@ EXTRA_DIST = CREDITS INSTALL.cgi INSTALL.upgrade README.unsupported \
 	sample-cgi/uprecords.footer uptimed.spec depcomp
 
 install-data-local:
-	$(INSTALL) -d /var/spool/uptimed
+	$(INSTALL) -d $(DESTDIR)/var/spool/uptimed
