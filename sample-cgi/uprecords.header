@@ -1,0 +1,12 @@
+<html>
+<head>
+<title>Uptime records for this host</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Uptime records for this host</h1>
+This host runs a cool program called <b>uptimed</b> to log uptime records.
+It comes with a nice program to examine the logs and display them in a
+humane manner. As you can see this program also runs as CGI!
+<p>
+Here are the uptime records for this system:
+<p>

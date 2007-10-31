@@ -1,0 +1,89 @@
+#!/bin/bash
+#
+# Init file for uptimed
+#
+# chkconfig: 2345 95 05
+# description: Uptimed daemon
+#
+
+RETVAL=0
+NAME="uptimed"
+UPTIMED="/usr/sbin/uptimed"
+
+if [ -f /etc/rc.d/init.d/functions ]
+then
+	# Redhat
+	. /etc/rc.d/init.d/functions
+	START="daemon $UPTIMED"
+	STOP="killproc $UPTIMED"
+	STATUS="status $UPTIMED"
+	CREATEBOOTID="action $\"Creating unique bootid for $NAME:\" $UPTIMED -b"
+	POST="echo"
+elif [ -f /sbin/start-stop-daemon ]
+then
+	# Debian
+	START="start-stop-daemon --start --quiet --pidfile /var/run/uptimed.pid --exec $UPTIMED"
+	STOP="start-stop-daemon --stop --quiet --pidfile /var/run/uptimed.pid --exec $UPTIMED"
+	STATUS="echo \"Status not implemented\""
+	CREATEBOOTID="echo \"Creating unique bootid for $NAME:\"; $UPTIMED -b"
+	POST="echo \"$NAME.\""
+else
+	# Eep. What do we do here ?
+	START="$UPTIMED"
+	STOP="killall $UPTIMED"
+	STATUS="echo \"Status not implemented\""
+	CREATEBOOTID="$UPTIMED -b"
+	POST="echo"
+fi
+
+start()
+{
+	echo -n $"Starting $NAME:"
+	$START
+	RETVAL=$?
+	$POST
+}
+
+stop()
+{
+	echo -n $"Stopping $NAME:"
+	$STOP
+	RETVAL=$?
+	$POST
+}
+
+showstatus()
+{
+	$STATUS $UPTIMED
+	RETVAL=$?
+}
+
+createbootid()
+{
+	$CREATEBOOTID
+	RETVAL=$?
+	$POST
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	createbootid)
+		createbootid
+		;;
+	status)
+		showstatus
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|createbootid|status}"
+		RETVAL=1
+esac
+exit $RETVAL
