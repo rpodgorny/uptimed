@@ -25,7 +25,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #define SYSWIDTH 24
 
 Urec	*u_current;
-time_t	first, prev;
+time_t	first, prev, tenth, second;
 int		runas_cgi=0, show_max=10, show_milestone=0, layout=PRE, run_loop=0, update_interval=5;
 int		sort_by=0, no_ansi=0, no_stats=0, no_current=0, wide_out=0;
 
@@ -138,13 +138,15 @@ void displayrecords(int cls)
 				if (uprev) prev=uprev->utime;
 				else
 				{
-					prev=0; first=0;
+ 					prev=0; first=0; tenth=0; second=0;
 				}
 			}
 			else
 			{
 				print_entry(u->utime, u->sys, u->btime, "   ", i, 0);
 				if (i==1) first=u->utime;
+ 				if (i==2) second=u->utime;
+ 				if (i==10) tenth=u->utime;
 			}
 		}
 		else if (u==u_current)
@@ -180,11 +182,19 @@ void displayrecords(int cls)
 			tmp=now + prev - u_current->utime;
 			print_entry(prev - u_current->utime + 1, "at", tmp, "1up in", 0, 0);
 		}
+		if (tenth && prev<=tenth && prev!=first)
+		{
+			tmp=now + tenth - u_current->utime;
+			print_entry(tenth - u_current->utime + 1, "at", tmp, "t10 in", 0, 0);
+		}
 		if (first)
 		{
 			tmp=now + first - u_current->utime;
 			print_entry(first - u_current->utime + 1, "at", tmp, "no1 in", 0, 0);
-		}
+		} else {
+			tmp=now + second - u_current->utime;
+			print_entry(u_current->utime - second - 1, "since", tmp, "NewRec", 0, 0);
+		}		
 		if (show_milestone)
 		{
 			Milestone *m;
