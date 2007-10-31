@@ -1,3 +1,9 @@
+next
+------
+
+- Makefile.am fix
+  (thanks to Jan Engelhardt <jengelh@computergmbh.de>)
+
 0.3.12
 ------
 
