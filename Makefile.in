@@ -429,7 +429,7 @@ uninstall-info: uninstall-info-recursive
 
 
 install-data-local:
-	$(INSTALL) -d /var/spool/uptimed
+	$(INSTALL) -d $(DESTDIR)/var/spool/uptimed
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
