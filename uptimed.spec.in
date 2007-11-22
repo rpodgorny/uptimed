@@ -1,16 +1,14 @@
-%define name	@PACKAGE@
-%define ver	@VERSION@
-%define rel	0
+%define release	1
 
-Summary		: A daemon to record and keep track of system uptimes
-Name		: %{name}
-Version		: %{ver}
-Release		: %{rel}
-Copyright	: GPL
-Group		: System Environment/Daemons
-Source		: http://prdownloads.sourceforge.net/%{name}/%{name}-%{ver}.tar.gz
-BuildRoot	: /var/tmp/%{name}-buildroot
-PreReq		: chkconfig >= 0.9
+Summary:	A daemon to record and keep track of system uptimes
+Name:	@PACKAGE@
+Version:	@VERSION@
+Release:	%{release}
+License:	GPL
+Group:	System Environment/Daemons
+Source:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+BuildRoot:	/var/tmp/%{name}-%{version}-buildroot
+PreReq:	chkconfig >= 0.9
 
 %description
 Uptimed is an uptime record daemon keeping track of the highest 
