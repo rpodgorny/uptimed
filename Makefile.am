@@ -10,3 +10,9 @@ AM_CFLAGS = @CFLAGS@ -DFILE_CONFIG=\"$(sysconfdir)/uptimed.conf\"
 
 install-data-local:
 	$(INSTALL) -d /var/spool/uptimed
+
+srpm: dist
+	@(rpmbuild -ts uptimed-$(PACKAGE_VERSION).tar.gz)
+
+rpm: dist
+	@(rpmbuild -ta uptimed-$(PACKAGE_VERSION).tar.gz)
