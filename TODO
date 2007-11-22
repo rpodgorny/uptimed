@@ -1,0 +1,40 @@
+For 0.4.0
+---------
+
+- Add reason to save_records (SIGTERM/SIGHUP==reboot, none==CRASH??)
+  - Include option to send e-mail directly after reboot if uptimed wasn't
+    shut down properly (no mail on scheduled reboots, only for crashes)
+    (cap)
+- Write ncurses uprecords and split uprecords into uprecords.cgi and ncurses
+  uprecords if necessary
+- configurable layout (ability to make the headers centered)
+
+For 0.5.0
+---------
+
+- Optional KNotify support (cap)
+  dcop knotify '' notify maximize kwin "new record" -1 -1 -1 -1
+  (requires changes in dcop server first, see
+  http://lists.kde.org/?l=kde-core-devel&m=100783153324488&w=2)
+- Include KDE panel applet GUI (cap)
+- Cool Gnome/WM progs that play a happy sound or pop-up when breaking the
+  record or reaching a milestone. Contributions in this area would be very
+  much appreciated.
+
+For 0.x.0
+---------
+
+- More portability? (BSD, Solaris, Windoze??)
+- Networking, kinda like rwhod. Uptimed broadcasts to localnet
+  (configurable??) and listens as well. Every machine has info for the
+  entire broadcast range (/var/spool/uptimed/host.records). Uprecords can be
+  called/configured to list: this machine only, a specified host or all. I
+  might drop this option or delay it and instead code in support for the
+  www.uptimes.net project, although I do like the idea of a rwhod alike
+  implementation.
+
+For 1.0.0
+---------
+
+- Have all that included and still have the GPL as biggest file in the
+  package. ;-)
