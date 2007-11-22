@@ -3,6 +3,8 @@ next
 
 - Makefile.am fix
   (thanks to Jan Engelhardt <jengelh@computergmbh.de>)
+- autotools fixes and cleanups
+  (thanks to Jeroen van Meeuwen <kanarip@kanarip.com>)
 
 0.3.12
 ------
