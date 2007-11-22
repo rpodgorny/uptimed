@@ -9,7 +9,7 @@ EXTRA_DIST = CREDITS INSTALL.cgi INSTALL.upgrade README.unsupported \
 AM_CFLAGS = @CFLAGS@ -DFILE_CONFIG=\"$(sysconfdir)/uptimed.conf\"
 
 install-data-local:
-	$(INSTALL) -d /var/spool/uptimed
+	$(INSTALL) -d $(DESTDIR)/var/spool/uptimed
 
 srpm: dist
 	@(rpmbuild -ts uptimed-$(PACKAGE_VERSION).tar.gz)

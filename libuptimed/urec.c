@@ -194,6 +194,21 @@ time_t read_uptime(void) {
 }
 #endif
 
+void calculate_downtime(void) {
+	Urec *u, *sorted_list = sort_urec(urec_list, -1);
+
+	for (u = sorted_list; u; u = u->next) {
+		if (u->next) {
+			 u->dtime = u->btime - (u->next->btime + u->next->utime);
+		} else { /* First uptime recorded... No prior downtime data. */
+			u->dtime = 0;
+		}
+	}
+
+	urec_list = sort_urec(sorted_list, 0);
+}
+
+
 void read_records(time_t current) {
 	FILE *f;
 	char str[256];
@@ -220,6 +235,8 @@ void read_records(time_t current) {
 		fgets(str, sizeof(str), f);
 	}
 	fclose(f);
+	
+	calculate_downtime();
 }
 
 void save_records(int max, time_t log_threshold) {
@@ -233,7 +250,7 @@ void save_records(int max, time_t log_threshold) {
 		return;
 	}
 
-	for(u=urec_list; u; u = u->next) {
+	for (u = urec_list; u; u = u->next) {
 		/* Ignore everything below the threshold */
 		if (u->utime >= log_threshold) {
 			fprintf(f, "%lu:%lu:%s\n", (unsigned long)u->utime, (unsigned long)u->btime, u->sys);
@@ -288,8 +305,7 @@ int createbootid(void) {
 
 	fd = open (UTMP_FILE, O_RDONLY);
 	if (fd >= 0) {
-		while(!found)
-		{
+		while(!found) {
 			if (read(fd, &ut, sizeof(ut)) < 0) {
 				found = -1;
 			} else if (ut.ut_type==BOOT_TIME) {
@@ -317,7 +333,7 @@ int createbootid(void) {
 	FILE *f;
 	struct pst_static _pst_static;
 	
-	pstat_getstatic( &_pst_static, sizeof(_pst_static), (size_t)1, 0);
+	pstat_getstatic(&_pst_static, sizeof(_pst_static), (size_t)1, 0);
 	f=fopen(FILE_BOOTID, "w");
 	if (!f) {
 		printf("Error writing bootid file, exiting!\n");  exit(-1);
@@ -378,7 +394,9 @@ time_t readbootid(void) {
 }
 
 int compare_urecs(Urec *a, Urec *b, int sort_by) {
-	if (sort_by == 1) {
+	if (sort_by == 0) {
+		return b->utime - a->utime;
+	} else if (sort_by == 1) {
 		return a->btime - b->btime;
 	} else if (sort_by == -1) {
 		return b->btime - a->btime;
