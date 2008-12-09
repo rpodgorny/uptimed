@@ -59,6 +59,7 @@ host_alias = @host_alias@
 host_triplet = @host@
 AMTAR = @AMTAR@
 AR = @AR@
+ARGZ_H = @ARGZ_H@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
@@ -66,17 +67,37 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-ECHO = @ECHO@
-EGREP = @EGREP@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 GCJ = @GCJ@
 GCJFLAGS = @GCJFLAGS@
+GREP = @GREP@
+INCLTDL = @INCLTDL@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
+LIBADD_DL = @LIBADD_DL@
+LIBADD_DLD_LINK = @LIBADD_DLD_LINK@
+LIBADD_DLOPEN = @LIBADD_DLOPEN@
+LIBADD_SHL_LOAD = @LIBADD_SHL_LOAD@
+LIBLTDL = @LIBLTDL@
+LIBM = @LIBM@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
+LTDLDEPS = @LTDLDEPS@
+LTDLINCL = @LTDLINCL@
+LTDLOPEN = @LTDLOPEN@
+LT_CONFIG_H = @LT_CONFIG_H@
+LT_DLLOADERS = @LT_DLLOADERS@
+LT_DLPREOPEN = @LT_DLPREOPEN@
+NM = @NM@
+NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 RC = @RC@
@@ -86,6 +107,10 @@ VERSION = @VERSION@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
+lt_ECHO = @lt_ECHO@
+ltdl_LIBOBJS = @ltdl_LIBOBJS@
+ltdl_LTLIBOBJS = @ltdl_LTLIBOBJS@
+sys_symbol_underscore = @sys_symbol_underscore@
 
 lib_LTLIBRARIES = libuptimed.la
 libuptimed_la_SOURCES = misc.c milestone.c urec.c
@@ -139,7 +164,7 @@ distclean-libtool:
 	-rm -f libtool
 $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  libuptimed/Makefile
+	  $(AUTOMAKE) --gnu  libuptimed/Makefile
 Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \

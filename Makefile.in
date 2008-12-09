@@ -61,6 +61,7 @@ host_alias = @host_alias@
 host_triplet = @host@
 AMTAR = @AMTAR@
 AR = @AR@
+ARGZ_H = @ARGZ_H@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
@@ -68,17 +69,37 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-ECHO = @ECHO@
-EGREP = @EGREP@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 GCJ = @GCJ@
 GCJFLAGS = @GCJFLAGS@
+GREP = @GREP@
+INCLTDL = @INCLTDL@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
+LIBADD_DL = @LIBADD_DL@
+LIBADD_DLD_LINK = @LIBADD_DLD_LINK@
+LIBADD_DLOPEN = @LIBADD_DLOPEN@
+LIBADD_SHL_LOAD = @LIBADD_SHL_LOAD@
+LIBLTDL = @LIBLTDL@
+LIBM = @LIBM@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
+LTDLDEPS = @LTDLDEPS@
+LTDLINCL = @LTDLINCL@
+LTDLOPEN = @LTDLOPEN@
+LT_CONFIG_H = @LT_CONFIG_H@
+LT_DLLOADERS = @LT_DLLOADERS@
+LT_DLPREOPEN = @LT_DLPREOPEN@
+NM = @NM@
+NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 RC = @RC@
@@ -88,6 +109,10 @@ VERSION = @VERSION@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
+lt_ECHO = @lt_ECHO@
+ltdl_LIBOBJS = @ltdl_LIBOBJS@
+ltdl_LTLIBOBJS = @ltdl_LTLIBOBJS@
+sys_symbol_underscore = @sys_symbol_underscore@
 
 SUBDIRS = libuptimed src man etc
 
@@ -106,10 +131,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-	Makefile.am Makefile.in TODO aclocal.m4 config.guess \
-	config.h.in config.sub configure configure.in depcomp \
-	install-sh ltmain.sh missing mkinstalldirs uptimed.spec.in
+DIST_COMMON = README ././stamp-h.in ./stamp-h.in AUTHORS COPYING \
+	ChangeLog INSTALL Makefile.am Makefile.in NEWS TODO aclocal.m4 \
+	config.guess config.h.in config.sub configure configure.in \
+	depcomp install-sh ltmain.sh missing mkinstalldirs \
+	uptimed.spec.in
 DIST_SUBDIRS = $(SUBDIRS)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -126,7 +152,7 @@ distclean-libtool:
 	-rm -f libtool
 $(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  Makefile
+	  $(AUTOMAKE) --gnu  Makefile
 Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
@@ -271,7 +297,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/. $(distdir)/sample-cgi
+	$(mkinstalldirs) $(distdir)/. $(distdir)/./. $(distdir)/sample-cgi
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
