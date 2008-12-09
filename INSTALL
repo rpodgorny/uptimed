@@ -1,120 +1,182 @@
-Contents
-========
+Basic Installation
+==================
 
-1. Compiling the sources
-2. Installing the binaries
-3. Editing your system startup files
-   a) Creating the boot id at startup
-   b) Running Uptimed in the background
-4. Configuration of Uptimed
-5. Examining the logfiles
+   These are generic installation instructions.
 
-1. Compiling the sources
-========================
+   The `configure' shell script attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a `Makefile' in each directory of the package.
+It may also create one or more `.h' files containing system-dependent
+definitions.  Finally, it creates a shell script `config.status' that
+you can run in the future to recreate the current configuration, a file
+`config.cache' that saves the results of its tests to speed up
+reconfiguring, and a file `config.log' containing compiler output
+(useful mainly for debugging `configure').
 
-Type './configure && make'. This should create two binaries, 'uptimed' and
-'uprecords'. Make sure you use GNU make on BSD systems, often installed as
-'gmake'.
+   If you need to do unusual things to compile the package, please try
+to figure out how `configure' could check whether to do them, and mail
+diffs or instructions to the address given in the `README' so they can
+be considered for the next release.  If at some point `config.cache'
+contains results you don't want to keep, you may remove or edit it.
 
-If the source does not compile, send a message to
-uptimed-devel@lists.capsi.com with the compile errors. Of course you are
-free to send some patches as well.
+   The file `configure.in' is used to create `configure' by a program
+called `autoconf'.  You only need `configure.in' if you want to change
+it or regenerate `configure' using a newer version of `autoconf'.
 
-2. Installing the binaries
-==========================
+The simplest way to compile this package is:
 
-As root, type 'make install'. This will create a spool directory for Uptimed
-and place the Uptimed binary in /usr/local/sbin, and the uprecords binary in
-/usr/local/bin. If you are upgrading from a previous version, read the
-INSTALL.upgrade file too.
+  1. `cd' to the directory containing the package's source code and type
+     `./configure' to configure the package for your system.  If you're
+     using `csh' on an old version of System V, you might need to type
+     `sh ./configure' instead to prevent `csh' from trying to execute
+     `configure' itself.
 
-3. Editing your system startup files
+     Running `configure' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.
+
+  2. Type `make' to compile the package.
+
+  3. Optionally, type `make check' to run any self-tests that come with
+     the package.
+
+  4. Type `make install' to install the programs and any data files and
+     documentation.
+
+  5. You can remove the program binaries and object files from the
+     source code directory by typing `make clean'.  To also remove the
+     files that `configure' created (so you can compile the package for
+     a different kind of computer), type `make distclean'.  There is
+     also a `make maintainer-clean' target, but that is intended mainly
+     for the package's developers.  If you use it, you may have to get
+     all sorts of other programs in order to regenerate files that came
+     with the distribution.
+
+Compilers and Options
+=====================
+
+   Some systems require unusual options for compilation or linking that
+the `configure' script does not know about.  You can give `configure'
+initial values for variables by setting them in the environment.  Using
+a Bourne-compatible shell, you can do that on the command line like
+this:
+     CC=c89 CFLAGS=-O2 LIBS=-lposix ./configure
+
+Or on systems that have the `env' program, you can do it like this:
+     env CPPFLAGS=-I/usr/local/include LDFLAGS=-s ./configure
+
+Compiling For Multiple Architectures
 ====================================
 
-a) Creating the bootid at startup
----------------------------------
+   You can compile the package for more than one kind of computer at the
+same time, by placing the object files for each architecture in their
+own directory.  To do this, you must use a version of `make' that
+supports the `VPATH' variable, such as GNU `make'.  `cd' to the
+directory where you want the object files and executables to go and run
+the `configure' script.  `configure' automatically checks for the
+source code in the directory that `configure' is in and in `..'.
 
-This step is not required for BSD systems.
+   If you have to use a `make' that does not supports the `VPATH'
+variable, you have to compile the package for one architecture at a time
+in the source code directory.  After you have installed the package for
+one architecture, use `make distclean' before reconfiguring for another
+architecture.
 
-To start the program automatically every time you start up your computer,
-add the following lines to your computers startup file for runlevel S.
+Installation Names
+==================
 
-echo "Creating unique uptime daemon bootid..."
-/usr/local/sbin/uptimed -b
+   By default, `make install' will install the package's files in
+`/usr/local/bin', `/usr/local/man', etc.  You can specify an
+installation prefix other than `/usr/local' by giving `configure' the
+option `--prefix=PATH'.
 
-The right procedure varies per platform and distribution:
+   You can specify separate installation prefixes for
+architecture-specific files and architecture-independent files.  If you
+give `configure' the option `--exec-prefix=PATH', the package will use
+PATH as the prefix for installing programs and libraries.
+Documentation and other data files will still use the regular prefix.
 
-- Slackware Linux:
-  Add it somewhere in /etc/rc.d/rc.S
+   In addition, if you use an unusual directory layout you can give
+options like `--bindir=PATH' to specify different values for particular
+kinds of files.  Run `configure --help' for a list of the directories
+you can set and what kinds of files go in them.
 
-- RedHat Linux:
-  Add it somewhere in /etc/rc.d/rc.sysinit
+   If the package supports it, you can cause programs to be installed
+with an extra prefix or suffix on their names by giving `configure' the
+option `--program-prefix=PREFIX' or `--program-suffix=SUFFIX'.
 
-- Debian Linux:
-  Put it in a file in /etc/init.d/ and symlink it from /etc/rc.S
+Optional Features
+=================
 
-- Solaris:
-  Put it in a file in /etc/init.d/ and symlink it from /etc/rcS.d
+   Some packages pay attention to `--enable-FEATURE' options to
+`configure', where FEATURE indicates an optional part of the package.
+They may also pay attention to `--with-PACKAGE' options, where PACKAGE
+is something like `gnu-as' or `x' (for the X Window System).  The
+`README' should mention any `--enable-' and `--with-' options that the
+package recognizes.
 
-- HP/UX:
-  See README.unsupported file.
+   For packages that use the X Window System, `configure' can usually
+find the X include and library files automatically, but if it doesn't,
+you can use the `configure' options `--x-includes=DIR' and
+`--x-libraries=DIR' to specify their locations.
 
-The -b flag is essential: it updates the /var/spool/uptimed/bootid file
-resulting in a unique id per boottime. This must be done in rc.S and not in
-rc.local to make sure the bootid stays intact even when switching runlevels.
-When using the -b flag, Uptimed exits on purpose.
+Specifying the System Type
+==========================
 
-b) Running Uptimed in the background
-------------------------------------
+   There may be some features `configure' can not figure out
+automatically, but needs to determine by the type of host the package
+will run on.  Usually `configure' can figure that out, but if it prints
+a message saying it can not guess the host type, give it the
+`--host=TYPE' option.  TYPE can either be a short name for the system
+type, such as `sun4', or a canonical name with three fields:
+     CPU-COMPANY-SYSTEM
 
-To make sure you always have Uptimed running during normal system operation,
-add the following lines to your systems multi-user runlevel configuration
-file:
+See the file `config.sub' for the possible values of each field.  If
+`config.sub' isn't included in this package, then this package doesn't
+need to know the host type.
 
-echo "Starting uptime daemon..."
-/usr/local/sbin/uptimed
-   
-- Linux:
-  Add it somewhere in /etc/rc.d/rc.local
+   If you are building compiler tools for cross-compiling, you can also
+use the `--target=TYPE' option to select the type of system they will
+produce code for and the `--build=TYPE' option to select the type of
+system on which you are compiling the package.
 
-- Solaris:
-  Put it in a file in /etc/init.d/ and symlink it from /etc/rc2.d
+Sharing Defaults
+================
 
-- FreeBSD:
-  Put it in a .sh script in /usr/local/etc/rc.d
+   If you want to set default values for `configure' scripts to share,
+you can create a site shell script called `config.site' that gives
+default values for variables like `CC', `cache_file', and `prefix'.
+`configure' looks for `PREFIX/share/config.site' if it exists, then
+`PREFIX/etc/config.site' if it exists.  Or, you can set the
+`CONFIG_SITE' environment variable to the location of the site script.
+A warning: not all `configure' scripts look for a site script.
 
-- HP/UX and BSD:
-  See README.unsupported file.
+Operation Controls
+==================
 
-The reason there are two steps is because the boottime for most platforms is
-calculated as system time minus uptime. This, unfortunately, is not a
-constant. The current system time might be updated by applications such as
-ntpd or rdate and timezone changes, making it unreliable as part of a unique
-id. Therefore it must be stored at boot time, once, for later use.
+   `configure' recognizes the following options to control how it
+operates.
 
-The actual daemon however should not be started at only at boot time, because
-you will want it up and running again when for example you come back from
-single user mode.
+`--cache-file=FILE'
+     Use and save the results of the tests in FILE instead of
+     `./config.cache'.  Set FILE to `/dev/null' to disable caching, for
+     debugging `configure'.
 
-So far having the -b switch and using a two-part startup process is the only
-solution I have come up with that works - apart from kernel patches to have
-a constant (and not calculated) boot time entry, which wouldn't be very
-cross-platform.
+`--help'
+     Print a summary of the options to `configure', and exit.
 
-4. Configuration of Uptimed
----------------------------
+`--quiet'
+`--silent'
+`-q'
+     Do not print messages saying which checks are being made.  To
+     suppress all normal output, redirect it to `/dev/null' (any error
+     messages will still be shown).
 
-The installation process installs a file called 'uptimed.conf-dist'. Edit
-its entries to your own satisfaction and save your changes as
-'uptimed.conf'.
+`--srcdir=DIR'
+     Look for the package's source code in directory DIR.  Usually
+     `configure' can determine that directory automatically.
 
-Uptimed will run perfectly with default configuration values without a
-'uptimed.conf' configuration file and also accepts various command-line
-arguments to overwrite both default values and configuration options.
+`--version'
+     Print the version of Autoconf used to generate the `configure'
+     script, and exit.
 
-5. Examining the logfiles
--------------------------
-
-To see the records, type 'uprecords'. The current session will be
-highlighted. You will probably only see one entry the first time you run the
-program. If that bothers you, reboot a few times. ;-)
+`configure' also accepts some other, not widely useful, options.
