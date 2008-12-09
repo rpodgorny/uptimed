@@ -1,8 +1,10 @@
-next
+0.3.13
 ------
 
 - Makefile.am fix
   (thanks to Jan Engelhardt <jengelh@computergmbh.de>)
+- now reading from backup records file
+  (thanks to Thibaut Varene <varenet@debian.org>)
 
 0.3.12
 ------
