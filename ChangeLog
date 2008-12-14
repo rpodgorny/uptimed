@@ -1,10 +1,12 @@
-next
+0.3.13
 ------
 
 - Makefile.am fix
   (thanks to Jan Engelhardt <jengelh@computergmbh.de>)
 - autotools fixes and cleanups
   (thanks to Jeroen van Meeuwen <kanarip@kanarip.com>)
+- now reading from backup records file
+  (thanks to Thibaut Varene <varenet@debian.org>)
 
 0.3.12
 ------
