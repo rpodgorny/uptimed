@@ -216,8 +216,13 @@ void read_records(time_t current) {
 	long l_utime, l_btime;
 	char buf[256], sys[SYSMAX+1];
 	
-	f=fopen(FILE_RECORDS, "r");
-	if (!f) return;
+	f = fopen(FILE_RECORDS, "r");
+	if (!f) {
+		f = fopen(FILE_RECORDS".old", "r");
+		if (!f) return;
+
+		printf("uptimed: reading from backup database %s.old\n", FILE_RECORDS);
+	}
 	
 	fgets(str, sizeof(str), f);
 	while (!feof(f)) {
@@ -259,6 +264,7 @@ void save_records(int max, time_t log_threshold) {
 		}
 	}
 	fclose(f);
+	rename(FILE_RECORDS, FILE_RECORDS".old");
 	rename(FILE_RECORDS".tmp", FILE_RECORDS);
 }
 
