@@ -137,7 +137,9 @@ void displayrecords(int cls)
 		printf("<th>%s</th>\n", "Boot up");
 	}
 
-	for ( u=sort_urec(urec_list, sort_by) ; u ; u=u->next )
+	urec_list = sort_urec(urec_list, sort_by);
+
+	for ( u=urec_list; u ; u=u->next )
 	{
 		if (++i<=show_max || show_max==0)
 		{
