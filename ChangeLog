@@ -1,3 +1,9 @@
+0.3.14
+------
+
+- fixed wrong output in repetitive mode
+  (thanks to David Relson <relson@osagesoftware.com>)
+
 0.3.13
 ------
 
