@@ -1,3 +1,9 @@
+0.3.15
+------
+
+- returned back the configure script
+  (oh how I hate the autotools!)
+
 0.3.14
 ------
 
