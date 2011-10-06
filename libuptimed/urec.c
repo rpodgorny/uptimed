@@ -215,20 +215,46 @@ void read_records(time_t current) {
 	time_t utime, btime;
 	long l_utime, l_btime;
 	char buf[256], sys[SYSMAX+1];
+	struct stat filestat, filestatold;
+	int useold = 0;
 	
-	f = fopen(FILE_RECORDS, "r");
-	if (!f) {
-		f = fopen(FILE_RECORDS".old", "r");
-		if (!f) return;
+	if (stat(FILE_RECORDS, &filestat))
+		useold = 1;
+	if (stat(FILE_RECORDS".old", &filestatold))
+		useold = -1;
 
-		printf("uptimed: reading from backup database %s.old\n", FILE_RECORDS);
+	/* assume that backupdb larger than normal db means normal is corrupted */
+	if (!useold && (filestat.st_size < filestatold.st_size))
+		useold = 1;
+
+dbtry:
+	switch (useold) {
+		case 0:
+			f = fopen(FILE_RECORDS, "r");
+			break;
+		case 1:
+			f = fopen(FILE_RECORDS".old", "r");
+			printf("uptimed: reading from backup database %s.old\n", FILE_RECORDS);
+			break;
+		default:
+			/* this should probably terminate uptimed somehow */
+			printf("uptimed: no useable database found.\n");
+			return;
+	}
+			
+	if (!f) {
+		printf("uptimed: error opening database for reading.\n");
+		return;
 	}
 	
 	fgets(str, sizeof(str), f);
 	while (!feof(f)) {
 		/* Check for validity of input string. */
 		if (sscanf(str, "%ld:%ld:%[^]\n]", &l_utime, &l_btime, buf) != 3) {
-			/* Skip this entry. Do we want feedback here? */
+			/* database is corrupted */
+			fclose(f);
+			useold++;
+			goto dbtry;
 		} else {
 			utime = (time_t)l_utime;
 			btime = (time_t)l_btime;
