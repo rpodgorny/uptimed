@@ -31,6 +31,7 @@ Thibaut Varene <t-bone@parisc-linux.org>
 	(patch to add support for darwin)
 	(output formatting patches)
 	(formatting fix)
+	(new backup database logic)
 
 Michael Ploujnikov <ploujj@gmail.com>
 	(reminded me how much autotools suck ;-) )
@@ -40,6 +41,3 @@ Lassi Selander <lassi.selander@saunalahti.fi>
 
 Peter Kerwien <peter@kerwien.homeip.net>
 	(time var width)
-
-Martin 'Helios' Steigerwald <martin@lichtvoll.de>
-	(new backup database logic)
