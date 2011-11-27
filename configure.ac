@@ -19,6 +19,9 @@ case "$host" in
   *-freebsd*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
+  *-kfreebsd*)
+    AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
+    ;;
   *-bsdi*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
