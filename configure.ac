@@ -31,6 +31,9 @@ case "$host" in
   *-darwin*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
+  *-gnu*)
+    AC_DEFINE(PLATFORM_GNU, 1, [Define if you are compiling for *GNU])
+    ;;
   *)
     AC_DEFINE(PLATFORM_UNKNOWN, 1, [Define if you are compiling for an unknown system])
     ;;
@@ -38,6 +41,7 @@ esac
 
 AC_REPLACE_FUNCS(getopt)
 AC_CHECK_HEADERS(getopt.h)
+AC_CHECK_FUNCS([getdtablesize])
 
 AC_OUTPUT([Makefile libuptimed/Makefile src/Makefile man/Makefile etc/Makefile uptimed.spec])
 

@@ -103,6 +103,9 @@ char *read_sysinfo(void) {
 #ifdef PLATFORM_HPUX
 		return "HP/UX";
 #endif
+#ifdef PLATFORM_GNU
+		return "GNU";
+#endif
 #ifdef PLATFORM_UNKNOWN
 		return "unknown";
 #endif
@@ -177,7 +180,7 @@ time_t read_uptime(void) {
 }
 #endif
 
-#ifdef PLATFORM_UNKNOWN
+#if defined(PLATFORM_UNKNOWN) || defined(PLATFORM_GNU)
 time_t read_uptime(void) {
 /*
  * This is a quick and inaccurate hack calculating the uptime from the
@@ -294,7 +297,7 @@ void save_records(int max, time_t log_threshold) {
 	rename(FILE_RECORDS".tmp", FILE_RECORDS);
 }
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD) || defined(PLATFORM_GNU)
 int createbootid(void) {
 	/* these platforms doesn't need to create a bootid file.
 	 * readbootid() fetches it directly from the system every time.
@@ -387,7 +390,7 @@ time_t readbootid(void) {
 	}
 
 	return bootid;
-#elif PLATFORM_LINUX
+#elif defined(PLATFORM_LINUX) || defined(PLATFORM_GNU)
 	FILE *f;
 	char str[256];
 	time_t bootid = 0;
