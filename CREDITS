@@ -43,7 +43,7 @@ Peter Kerwien <peter@kerwien.homeip.net>
 	(time var width)
 
 Kacper Gutowski <mwgamera@gmail.com>
-	(tested on kFreeBSD)
+	(tested on kfreebsd)
 
 Svante Signell <svante.signell@telia.com>
 	(gnu hurd support)
