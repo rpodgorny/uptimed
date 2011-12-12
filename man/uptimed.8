@@ -1,0 +1,62 @@
+.TH UPTIMED 8 "May 28, 2004"
+.nh
+
+.SH NAME
+uptimed \- daemon to record uptime records
+
+.SH SYNOPSIS
+.B uptimed
+[ \fB-?bv\fP ] [ \fB-e\fP <email> ] [ \fB-i\fP <interval> ] [ \fB-m\fP <count> ]
+
+.SH DESCRIPTION
+This manual page documents the
+.B uptimed
+program.
+.PP
+.B uptimed
+is a daemon that records statistics about a machine's uptime. Use the 
+.B uprecords(1)
+program to get uptime record statistics.
+
+.SH OPTIONS
+These command-line options override settings in the configuration file 
+.B /etc/uptimed.conf
+.TP
+.B \-?
+Show usage
+.TP
+.B \-b
+Create bootid and exit. This option is ignored on BSD systems, because the
+BSD kernel keeps a static boot time variable in memory so Uptimed does not
+need to cache this value.
+.TP
+\fB\-p\fP <file>
+Write PID to pidfile <file>
+.TP
+\fB\-e\fP <email>
+Send mail to <email> at milestones/records
+.TP
+\fB\-i\fP <interval>
+Use <interval> seconds for loop
+.TP
+\fB\-m\fP <count>
+Log a maximum of <count> entries
+.TP
+\fB\-t\fP <timespec>
+Set the minimum uptime to be considered a record
+.TP
+.B \-v
+Show version information
+
+.SH SEE ALSO
+.BR uprecords (1)
+.br
+
+.SH AUTHOR
+Rob Kaper <cap@capsi.com>.
+
+This manual page was written by Alan Ford <alan@whirlnet.co.uk>, for the
+Debian GNU/Linux system (but may be used by others). It was last modified
+for
+.B uptimed
+version 0.3.7.

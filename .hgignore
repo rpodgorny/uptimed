@@ -1,0 +1,22 @@
+syntax: glob
+*.so*
+libuptimed/.deps*
+libuptimed/.libs*
+*Makefile
+*~
+autom4te.cache*
+aclocal.m4
+config.h
+config.log
+config.status
+libtool
+libuptimed/*.la
+libuptimed/*.lo
+libuptimed/*.o
+src/.deps*
+src/.libs*
+src/uprecords
+src/uptimed
+src/*.o
+*.tar.gz
+

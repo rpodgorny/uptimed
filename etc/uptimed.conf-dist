@@ -1,0 +1,56 @@
+# Uptimed configuration file.
+
+# Interval to write the logfile with in seconds.
+UPDATE_INTERVAL=60
+
+# Maximum number of entries in logfile. Set to 0 for unlimited.
+LOG_MAXIMUM_ENTRIES=50
+
+# Minimum uptime that must be reached for it to be considered a record.
+LOG_MINIMUM_UPTIMED=1h
+
+# Minimum uptime before sending out e-mail.
+MAIL_MINIMUM_UPTIME=1d
+
+# Minimum position before sending out e-mail.
+MAIL_MINIMUM_POSITION=10
+
+# Email address to mail milestones/records to.
+# Assumes sendmail compatible MTA installed as /usr/lib/sendmail.
+# You can enable this below or with the -e option on the commandline.
+EMAIL=root@localhost
+
+# Send email? (0 = no way, 1 = yes please!, 2 = only for milestones,
+# 3 = only for records)
+SEND_EMAIL=0
+
+# We need a sendmail compatible mailer, though.
+SENDMAIL=/usr/lib/sendmail -t
+
+# Where to note our PID
+PIDFILE=/var/run/uptimed
+
+# Milestones are configurable now.
+# Syntax is pretty easy: MILESTONE=time:description
+# Default time is in seconds, but it can be postfixed with "d", "w" or "y"
+# for days/weeks/years.
+# Keep in mind that the description needs to fit in the window.
+MILESTONE=5d:five days
+MILESTONE=10d:ten days
+MILESTONE=25d:twenty-five days
+MILESTONE=50d:fifty days
+MILESTONE=10w:ten weeks
+MILESTONE=75d:seventy-five days
+MILESTONE=100d:hundred days
+MILESTONE=150d:hundred and fifty days
+MILESTONE=25w:twenty-five weeks
+MILESTONE=200d:two hundred days
+MILESTONE=250d:250 days
+MILESTONE=300d:three hundred days
+MILESTONE=50w:fifty weeks
+MILESTONE=1y:one year
+MILESTONE=400d:four hundred days
+MILESTONE=500d:five hundred days
+MILESTONE=100w:hundred weeks
+MILESTONE=750d:750 days
+MILESTONE=1000d:thousand days
