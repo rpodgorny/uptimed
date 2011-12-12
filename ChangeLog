@@ -1,3 +1,14 @@
+0.3.17
+------
+
+- new backup database logic
+  (thanks to Thibaut Varene <varenet@debian.org>)
+- added support for kfreebsd
+  (thanks to Kacper Gutowski <mwgamera@gmail.com>)
+- added support for gnu hurd
+  (thanks to Svante Signell <svante.signell@telia.com>)
+- various small patches from debian
+
 0.3.16
 ------
 
