@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
 
 void bg(void)
 {
-	int i;
+	int i, fdmax;
 	/* Simple fork to run proces in the background. */
 	switch(fork())
 	{
@@ -190,7 +190,15 @@ void bg(void)
 	}
 
 	/* Close probably all file descriptors */
-	for (i = 0; i<NOFILE; i++)
+#ifdef HAVE_GETDTABLESIZE
+	fdmax = getdtablesize();
+#else
+	fdmax = sysconf(_SC_OPEN_MAX);
+#endif
+	if (fdmax <= 0)
+		fdmax = 3;
+
+	for (i = 0; i < fdmax; i++)
 		close(i);
 
 	/* Be nice to umount */
