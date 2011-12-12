@@ -2,7 +2,7 @@
 <head>
 <title>Uptime records for this host</title>
 </head>
-<body bgcolor="#ffffff">
+<body bgcolor="#ffffff" text="#000000">
 <h1>Uptime records for this host</h1>
 This host runs a cool program called <b>uptimed</b> to log uptime records.
 It comes with a nice program to examine the logs and display them in a

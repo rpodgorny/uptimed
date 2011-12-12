@@ -21,6 +21,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 
 #ifdef PLATFORM_LINUX
 #include <sys/sysinfo.h>

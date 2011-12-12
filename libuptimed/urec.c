@@ -215,20 +215,46 @@ void read_records(time_t current) {
 	time_t utime, btime;
 	long l_utime, l_btime;
 	char buf[256], sys[SYSMAX+1];
+	struct stat filestat, filestatold;
+	int useold = 0;
 	
-	f = fopen(FILE_RECORDS, "r");
-	if (!f) {
-		f = fopen(FILE_RECORDS".old", "r");
-		if (!f) return;
+	if (stat(FILE_RECORDS, &filestat))
+		useold = 1;
+	if (stat(FILE_RECORDS".old", &filestatold))
+		useold = -1;
 
-		printf("uptimed: reading from backup database %s.old\n", FILE_RECORDS);
+	/* assume that backupdb larger than normal db means normal is corrupted */
+	if (!useold && (filestat.st_size < filestatold.st_size))
+		useold = 1;
+
+dbtry:
+	switch (useold) {
+		case 0:
+			f = fopen(FILE_RECORDS, "r");
+			break;
+		case 1:
+			f = fopen(FILE_RECORDS".old", "r");
+			printf("uptimed: reading from backup database %s.old\n", FILE_RECORDS);
+			break;
+		default:
+			/* this should probably terminate uptimed somehow */
+			printf("uptimed: no useable database found.\n");
+			return;
+	}
+			
+	if (!f) {
+		printf("uptimed: error opening database for reading.\n");
+		return;
 	}
 	
 	fgets(str, sizeof(str), f);
 	while (!feof(f)) {
 		/* Check for validity of input string. */
 		if (sscanf(str, "%ld:%ld:%[^]\n]", &l_utime, &l_btime, buf) != 3) {
-			/* Skip this entry. Do we want feedback here? */
+			/* database is corrupted */
+			fclose(f);
+			useold++;
+			goto dbtry;
 		} else {
 			utime = (time_t)l_utime;
 			btime = (time_t)l_btime;
@@ -268,34 +294,11 @@ void save_records(int max, time_t log_threshold) {
 	rename(FILE_RECORDS".tmp", FILE_RECORDS);
 }
 
-#ifdef PLATFORM_LINUX
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD)
 int createbootid(void) {
-	FILE *f;
-	char str[256];
-	time_t bootid = 0;
-	
-	f=fopen("/proc/stat", "r");
-	if (!f) {
-		printf ("Error opening /proc file. Can not determine bootid, exiting!\n"); exit(-1);
-	} else {
-		fgets(str, sizeof(str), f);
-		while (!feof(f)) {
-			if (strstr(str, "btime")) {
-				bootid=atoi(str+6);
-				break;
-			}
-			fgets(str, sizeof(str), f);
-		}
-		fclose(f);
-	}
-	
-	f = fopen(FILE_BOOTID, "w");
-	if (!f) {
-		printf("Error writing bootid file, exiting!\n");  exit(-1);
-	} else {
-		fprintf(f, "%ld\n", bootid);
-		fclose(f);
-	}
+	/* these platforms doesn't need to create a bootid file.
+	 * readbootid() fetches it directly from the system every time.
+	 */
 	return 0;
 }
 #endif
@@ -383,6 +386,31 @@ time_t readbootid(void) {
 		bootid = boottime.tv_sec;
 	}
 
+	return bootid;
+#elif PLATFORM_LINUX
+	FILE *f;
+	char str[256];
+	time_t bootid = 0;
+
+	f=fopen("/proc/stat", "r");
+	if (!f) {
+		printf ("Error opening /proc/stat file. Can not determine bootid, exiting!\n");
+		exit(-1);
+	} else {
+		fgets(str, sizeof(str), f);
+		while (!feof(f)) {
+			if (strstr(str, "btime")) {
+				bootid=atoi(str+6);
+				break;
+			}
+			fgets(str, sizeof(str), f);
+		}
+		fclose(f);
+	}
+	if (bootid == 0) {
+		printf ("Parsing btime from /proc/stat failed. Can not determine bootid, exiting!\n");
+		exit(-1);
+	}
 	return bootid;
 #else
 	FILE *f;

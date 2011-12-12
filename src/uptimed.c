@@ -75,7 +75,6 @@ int main(int argc, char *argv[])
  		}
  	}		
 
-#ifndef PLATFORM_BSD
 	/* Create bootid and exit. Should be done once on startup. */
 	if (create_bootid)
 	{
@@ -83,7 +82,6 @@ int main(int argc, char *argv[])
 		syslog(LOG_INFO, SYSLOG_PREFIX "created bootid: %d", readbootid());
 		exit(0);
 	}
-#endif
 
 	if (update_interval<1)
 		update_interval=1;

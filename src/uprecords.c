@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
 	/* Print header file. */
 	if (runas_cgi)
-		cat("uprecords.header");
+		cat("/etc/uprecords-cgi/uprecords.header");
 
 	/* Read current uptime and entries from logfile. */
 	u_current=add_urec(read_uptime(), readbootid(), read_sysinfo());
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
 	/* Print footer file. */
 	if (runas_cgi)
-		cat("uprecords.footer");
+		cat("/etc/uprecords-cgi/uprecords.footer");
 
 	return 0;
 }
@@ -287,7 +287,7 @@ void read_config_cgi(void)
 	FILE *f;
 	char str[256];
 
-	f=fopen("uprecords.conf", "r");	
+	f=fopen("/etc/uprecords-cgi/uprecords.conf", "r");	
 	if (!f)
 		return;
 	
