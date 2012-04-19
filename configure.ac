@@ -1,6 +1,6 @@
 dnl configure.in for uptimed
 
-AC_INIT([uptimed], 0.3.16)
+AC_INIT([uptimed], 0.3.17)
 AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AM_PROG_LIBTOOL
