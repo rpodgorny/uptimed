@@ -1,0 +1,65 @@
+Contents
+--------
+
+	1. Upgrading from version 0.1.x and 0.2.x
+	2. Upgrading from version 0.03
+	3. Upgrading from version 0.02
+
+1. Upgrading from version 0.1.x and 0.2.x
+-----------------------------------------
+
+The uptimed configuration file has been expanded to support new options. You
+probably want to merge your custom configuration from 'uptimed.conf' with
+the sample file called 'uptimed.conf-dist'.
+
+2. Upgrading from version 0.03
+------------------------------
+
+The location of bootid and logfiles have changed to the /var/spool/uptimed/
+directory. This directory has already been created by 'make install'.
+However, you also need to move the old logfiles to the new location.
+
+First, shut down any running uptimed daemons.
+
+	killall uptimed
+
+(Note that the killall command might not have the desired effect on
+non-Linux systems.)
+
+Now move the old files:
+
+	mv /etc/uptimed.log /var/spool/uptimed/records
+	mv /var/run/uptimed.bootid /var/spool/uptimed/bootid
+
+Finally, start the (new) uptimed daemon:
+
+	uptimed
+
+Now follow the instructions as if you were upgrading from version 0.1.0.
+
+3. Upgrading from version 0.02
+------------------------------
+
+Versions 0.03 and higher log system information into the logfile. You have
+to convert these logfiles manually:
+
+First, shut down any running uptimed daemons.
+
+	killall uptimed
+
+(Note that the killall command might not have the desired effect on
+non-Linux systems.)
+
+Edit the file /etc/uptimed.log and change the entries from the format
+
+uptime:boottime
+to
+uptime:bootttime:systeminfo
+
+Example:
+
+377428:943880710
+to
+377428:943880710:Linux 2.2.13
+
+Now follow the instructions as if you were upgrading from version 0.03.

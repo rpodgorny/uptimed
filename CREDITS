@@ -1,0 +1,49 @@
+The following people have contributed to Uptime. Thanks a lot!
+
+Brett Pemberton <generica@email.com>
+	(autoconf/automake/getopt support)
+	(various patches)
+	(RPM packages)
+
+Vitezslav Samel <vsamel@seznam.cz>
+	(patch to use sysinfo instead of /proc/uptime for Linux)
+	(various other patches)
+
+Helge Deller <deller@gmx.de>
+	(HP/UX support)
+
+Martijn Broenland
+	(code for BSD uptime was taken from his upclient program)
+
+Alan Ford <alan@whirlnet.co.uk>
+	(manual pages)
+
+Ted Rolle <ted@acacia.datacomm.com>
+	(code for d/w/y postfix in milestone configuration)
+
+Ademar de Souza Reis Jr. <ademar@linuxbr.com.br>
+	(little bugfix in saving uprecords)
+
+Radek Podgorny <radek@podgorny.cz>
+	(patch to add the "don't fork" option)
+
+Thibaut Varene <t-bone@parisc-linux.org>
+	(patch to add support for darwin)
+	(output formatting patches)
+	(formatting fix)
+	(new backup database logic)
+
+Michael Ploujnikov <ploujj@gmail.com>
+	(reminded me how much autotools suck ;-) )
+
+Lassi Selander <lassi.selander@saunalahti.fi>
+	(mailspam fix)
+
+Peter Kerwien <peter@kerwien.homeip.net>
+	(time var width)
+
+Kacper Gutowski <mwgamera@gmail.com>
+	(tested on kfreebsd)
+
+Svante Signell <svante.signell@telia.com>
+	(gnu hurd support)
