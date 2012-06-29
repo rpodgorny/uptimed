@@ -47,3 +47,7 @@ Kacper Gutowski <mwgamera@gmail.com>
 
 Svante Signell <svante.signell@telia.com>
 	(gnu hurd support)
+
+Tomasz Torcz <tomek@pipebreaker.pl>
+	(minor administrative updates)
+	(systemd unit definition)
