@@ -9,6 +9,15 @@ AM_INIT_AUTOMAKE
 case "$host" in
   *-linux*)
     AC_DEFINE(PLATFORM_LINUX, 1, [Define if you are compiling for Linux])
+    PKG_PROG_PKG_CONFIG
+    AC_ARG_WITH([systemdsystemunitdir],
+        AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
+        [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
+        if test "x$with_systemdsystemunitdir" != xno; then
+            AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
+            AC_OUTPUT([etc/uptimed.service])       
+        fi
+        AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
     ;;
   *-hpux*)
     AC_DEFINE(PLATFORM_HPUX, 1, [Define if you are compiling for HP/UX])
