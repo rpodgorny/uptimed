@@ -21,7 +21,7 @@ char hd[256];
 
 char *time2uptime (time_t t)
 {
-	static char	timebuf[20] = "";
+	static char	timebuf[21] = "";
 	int		sec, min, hour, day;
 
 	sec = t % 60;

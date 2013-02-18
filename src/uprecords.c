@@ -119,9 +119,9 @@ void displayrecords(int cls)
 	if (layout==PRE)
 	{
 		if (!show_downtime) {
-			printf("   %3s %20s | %-*s %*s\n", "#", "Uptime", SYSWIDTH, "System", TIMEMAX, "Boot up");
+			printf("   %3s%21s | %-*s %*s\n", "#", "Uptime", SYSWIDTH, "System", TIMEMAX, "Boot up");
 		} else {
-			printf("   %3s %20s | %*s %*s\n", "#", "Uptime", DOWNWIDTH, "Last downtime", DOWNTIMEMAXWIDTH, "Boot up");
+			printf("   %3s%21s | %*s %*s\n", "#", "Uptime", DOWNWIDTH, "Last downtime", DOWNTIMEMAXWIDTH, "Boot up");
 		}
 		print_line();
 	}
@@ -377,9 +377,9 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 			if (!wide_out && strlen(sys) > SYSWIDTH)
 				sys[SYSWIDTH] = '\0';		/* truncate for 80 cols */
 			if (pos)
-				printf("%s%3s%3d %20s %s|%s %-*s %*s%s\n", bold, ident, pos, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
+				printf("%s%3s%3d%21s %s|%s %-*s %*s%s\n", bold, ident, pos, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
 			else
-				printf("%s%6s %20s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
+				printf("%s%6s%21s %s|%s %-*s %*s%s\n", bold, ident, time2uptime(utime), plain, bold, SYSWIDTH, sys, TIMEMAX, ctimec, plain);
 	}
 }
 
@@ -437,9 +437,9 @@ void print_downtime_entry(time_t utime, time_t dtime, time_t btime, char *ident,
 			if((ctimec = ctime(&btime)))
 				ctimec[TIMEMAX-1] = '\0';	/* erase the ending '\n' */
 			if (pos) {
-				printf("%s%3s%3d %20s %s|%s %*s %*s%s\n", bold, ident, pos, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
+				printf("%s%3s%3d%21s %s|%s %*s %*s%s\n", bold, ident, pos, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
 			} else {
-				printf("%s%6s %20s %s|%s %*s %*s%s\n", bold, ident, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
+				printf("%s%6s%21s %s|%s %*s %*s%s\n", bold, ident, timebuf, plain, bold, DOWNWIDTH, dtimebuf, DOWNTIMEMAXWIDTH, ctimec, plain);
 			}
 	}
 }
