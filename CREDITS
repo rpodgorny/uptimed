@@ -55,3 +55,6 @@ Tomasz Torcz <tomek@pipebreaker.pl>
 David Relson <relson@osagesoftware.com>
 	(fix for bad output formatting of total uptime and downtime)
 
+Martin Natano <natano@natano.net>
+	(add support for bitrig)
+
