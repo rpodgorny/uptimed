@@ -40,6 +40,9 @@ case "$host" in
   *-openbsd*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
+  *-bitrig*)
+    AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
+    ;;
   *-darwin*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
