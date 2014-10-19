@@ -3,7 +3,6 @@ Description=Uptime record tracking daemon
 Documentation=man:uptimed(8) man:uprecords(1)
 
 [Service]
-ExecStartPre=@prefix@/sbin/uptimed -b
 ExecStart=@prefix@/sbin/uptimed -f
 
 [Install]
