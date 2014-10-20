@@ -114,7 +114,21 @@ char *read_sysinfo(void) {
 
 #ifdef PLATFORM_LINUX
 time_t read_uptime(void) {
+	FILE *f;
+	double upseconds = 0;
 	struct sysinfo	si;
+
+	f=fopen("/proc/uptime", "r");
+	if (f > 0) {
+		if (fscanf(f, "%lf", &upseconds) > 0) {
+			fclose(f);
+			return((time_t)upseconds);
+		}
+		fclose(f);
+	}
+
+
+	/* reading of /proc/uptime failed */
 
 	/* Until jiffies is declared to something different than unsigned long
 	 * in the kernel sources, this value will probably on all 32b platforms
