@@ -17,6 +17,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 
 #include "../config.h"
 #include "uptimed.h"
+#include "sd-daemon.h"
 
 #ifdef PLATFORM_HPUX
 #define	SYSLOG_PREFIX	"uptimed: "
@@ -38,7 +39,7 @@ char email[EMAIL+1], sendmail[EMAIL+1], pidfile[EMAIL+1];
 int main(int argc, char *argv[])
 {
 	Milestone *next_milestone = NULL, *cheer_milestone = NULL;
-	time_t prev=0;
+	time_t prev=0,tmp=0;
 	int cheer_pos=0;
 	void handler(int);
 
@@ -122,6 +123,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	sd_notifyf(0, "MAINPID=%lu\n", (unsigned long)getpid());
+	sd_notify(0, "READY=1\n");
+
 	/* The main loop. */
 	while (1)
 	{
@@ -163,6 +167,14 @@ int main(int argc, char *argv[])
 			cheer_milestone = NULL;
 		}
 		
+		/* Update status for service manager */
+		if (next_milestone) {
+			tmp = time(0) + next_milestone->time - u_current->utime;
+			sd_notifyf(0, "STATUS=Next milestone (%s) at %s\n", 
+					next_milestone->desc,
+					ctime(&tmp));
+		}
+
 		/* Save all the records. */
 		save_records(log_max_entries, log_min_uptime);
 

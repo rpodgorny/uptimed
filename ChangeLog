@@ -1,6 +1,7 @@
 0.3.18
 - reintroduce reading of /proc/uptime on Linux
 - also try clock_gettime() on Linux
+- extended status for systemd/Linux
 
 0.3.17
 ------
