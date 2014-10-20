@@ -114,10 +114,17 @@ char *read_sysinfo(void) {
 
 #ifdef PLATFORM_LINUX
 time_t read_uptime(void) {
+	struct timespec ts;
 	FILE *f;
 	double upseconds = 0;
 	struct sysinfo	si;
 
+
+	if (clock_gettime(CLOCK_BOOTTIME, &ts) == 0)
+		return ts.tv_sec;
+
+
+	/* clock_gettime() failed */
 	f=fopen("/proc/uptime", "r");
 	if (f > 0) {
 		if (fscanf(f, "%lf", &upseconds) > 0) {
