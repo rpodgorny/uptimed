@@ -1,3 +1,6 @@
+0.3.18
+- reintroduce reading of /proc/uptime on Linux
+
 0.3.17
 ------
 
