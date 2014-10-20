@@ -50,7 +50,7 @@ Svante Signell <svante.signell@telia.com>
 
 Tomasz Torcz <tomek@pipebreaker.pl>
 	(minor administrative updates)
-	(systemd unit definition)
+	(systemd unit and systemd integration)
 
 David Relson <relson@osagesoftware.com>
 	(fix for bad output formatting of total uptime and downtime)

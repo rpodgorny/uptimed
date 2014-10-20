@@ -1,7 +1,12 @@
 0.3.18
+------
+
 - reintroduce reading of /proc/uptime on Linux
+  (thanks to Tomasz Torcz <tomek@pipebreaker.pl>)
 - also try clock_gettime() on Linux
+  (thanks to Tomasz Torcz <tomek@pipebreaker.pl>)
 - extended status for systemd/Linux
+  (thanks to Tomasz Torcz <tomek@pipebreaker.pl>)
 
 0.3.17
 ------
@@ -62,9 +67,7 @@
 -----
 
 - fixed bad formatting
-  (thanks to Thibaud Varene <t-bone@parisc-linux.org>)
-
-0.3.8
+  (thanks to Thibaud Varene <t-bone@parisc-linux.org>) 0.3.8
 -----
 
 - fixes with different time widths
