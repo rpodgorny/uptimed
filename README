@@ -3,9 +3,8 @@ Contents
 
 1. Introduction
 2. Availability
-3. Mailinglists
-4. Acknowledgments
-5. Contacting the author
+3. Acknowledgments
+4. Contacting the author
 
 1. Introduction
 ===============
@@ -22,22 +21,7 @@ You can always get the latest release from the Uptimed website:
 
 http://podgorny.cz/uptimed/
 
-3. Mailinglists
-===============
-
-There is a (low-traffic) mailinglist for Uptimed release announcements or
-general discussion of the program.
-
-To subscribe, send e-mail to: uptimed-friends-subscribe@lists.capsi.com
-To post, send e-mail to: uptimed-friends@lists.capsi.com
-
-There are similar lists uptimed-devel for development issues and
-uptimed-cvs for notifications of changes in the CVS tree. For more
-information, check out:
-
-http://unixcode.org/uptimed/mailinglists.html (probably abandoned)
-
-4. Acknowledgments
+3. Acknowledgments
 ==================
 
 Uptimed was inspired by a similar utility called 'ud', but is completely
@@ -48,8 +32,8 @@ accidentely killing Uptimed or running multiple instances of it.
 
 For a list of contributors to Uptimed, please read the CREDITS file.
 
-5. Contacting the author/maintainer
+4. Contacting the author/maintainer
 ===================================
 
-Suggestions, questions, comments, bugfixes, patches: <radek@podgorny.cz>
+Suggestions, questions, comments, bugfixes, patches: Radek Podgorny <radek@podgorny.cz>
 Original maintainer and author: Rob Kaper <rob@unixcode.org>
