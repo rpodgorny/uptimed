@@ -1,0 +1,70 @@
+# stolen from https://github.com/rakshasa/rtorrent/blob/master/.gitignore and modified slightly
+
+# Compiled source #
+###################
+*.o
+*.lo
+*.a
+*.la
+*.so
+*.in
+*.sub
+*.pc
+*.orig
+*.rej
+
+# Autoconf files #
+##################
+
+.deps
+.libs
+Makefile
+aclocal.m4
+autom4te.cache
+compile
+config.h
+config.guess
+config.status
+confdefs.h
+conftest.dir
+configure
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+stamp-h1
+
+# Editor poo #
+##############
+.#*
+\#*#
+*~
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.gz
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+
+# OS generated files #
+######################
+.DS_Store?
+.dirstamp
+ehthumbs.db
+Icon?
+Thumbs.db
+TAGS
+
+# uptimed specific files #
+##########################
+src/uptimed
+src/uprecords
+etc/uptimed.service
+uptimed.spec
