@@ -42,4 +42,5 @@ For a list of contributors to Uptimed, please read the CREDITS file.
 ===================================
 
 Questions, comments, bugfixes, patches: Radek Podgorny <radek@podgorny.cz>
+
 Original maintainer and author: Rob Kaper <rob@unixcode.org>
