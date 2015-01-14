@@ -1,0 +1,17 @@
+*~
+*/.deps/
+*/Makefile
+Makefile
+aclocal.m4
+autom4te.cache/
+config.guess
+config.h
+config.log
+config.status
+config.sub
+configure
+etc/uptimed.service
+ltmain.sh
+libtool
+stamp-h1
+uptimed.spec
