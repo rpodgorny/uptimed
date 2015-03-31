@@ -15,7 +15,7 @@ case "$host" in
         [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
         if test "x$with_systemdsystemunitdir" != xno; then
             AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
-            AC_OUTPUT([etc/uptimed.service])       
+            AC_OUTPUT([etc/uptimed.service])
         fi
         AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
     ;;
