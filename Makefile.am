@@ -1,5 +1,8 @@
 # Makefile.am for uptimed
 
+# this prevents automake from screaming at us about missing README
+AUTOMAKE_OPTIONS = foreign
+
 SUBDIRS = libuptimed src man etc
 
 EXTRA_DIST = CREDITS INSTALL.cgi INSTALL.upgrade README.unsupported \
