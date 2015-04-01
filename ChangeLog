@@ -1,3 +1,10 @@
+0.4.0
+-----
+
+- dropped pre-generated autotools stuff
+- fixed configure step on non-linux platforms
+  (thanks to Baptiste Fontaine <b@ptistefontaine.fr>)
+
 0.3.18
 ------
 

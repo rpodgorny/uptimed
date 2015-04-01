@@ -58,3 +58,5 @@ David Relson <relson@osagesoftware.com>
 Martin Natano <natano@natano.net>
 	(add support for bitrig)
 
+Baptiste Fontaine <b@ptistefontaine.fr>
+	(fix for configure step on non-linux platforms)
