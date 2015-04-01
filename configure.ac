@@ -17,7 +17,6 @@ case "$host" in
             AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
             AC_OUTPUT([etc/uptimed.service])
         fi
-        AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
     ;;
   *-hpux*)
     AC_DEFINE(PLATFORM_HPUX, 1, [Define if you are compiling for HP/UX])
@@ -53,6 +52,8 @@ case "$host" in
     AC_DEFINE(PLATFORM_UNKNOWN, 1, [Define if you are compiling for an unknown system])
     ;;
 esac
+
+AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
 
 AC_REPLACE_FUNCS(getopt)
 AC_CHECK_HEADERS(getopt.h)
