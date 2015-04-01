@@ -16,6 +16,6 @@ AM_CPPFLAGS += -DSD_DAEMON_DISABLE_MQ
 noinst_HEADERS = uprecords.h uptimed.h sd-daemon.h
 
 EXTRA_DIST = getopt.c getopt.h
-  
+
 uptimed.o uprecords.o:
 AM_CFLAGS = @CFLAGS@ -DFILE_CONFIG=\"$(sysconfdir)/uptimed.conf\"
