@@ -106,4 +106,3 @@ rm -rf "$RPM_BUILD_ROOT"
 
 * Thu Dec 20 2001 Brett Pemberton <generica@email.com>
 - Initial spec-file
-
