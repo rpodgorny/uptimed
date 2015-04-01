@@ -5,6 +5,7 @@ Documentation=man:uptimed(8) man:uprecords(1)
 [Service]
 Type=notify
 ExecStart=@prefix@/sbin/uptimed -f
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
