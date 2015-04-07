@@ -4,6 +4,7 @@
 - dropped pre-generated autotools stuff
 - fixed configure step on non-linux platforms
   (thanks to Baptiste Fontaine <b@ptistefontaine.fr>)
+- updated systemd unit to restart daemon on failure
 
 0.3.18
 ------
