@@ -109,6 +109,11 @@ time_t scantime(char *str) {
 				multiplier = 1;
 				break;
 
+			case 'h':
+				/* Hours */
+				multiplier = 3600;
+				break;
+
 			case 'd':
 				/* Days. */
 				multiplier = 86400;

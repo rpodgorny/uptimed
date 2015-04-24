@@ -7,7 +7,7 @@ UPDATE_INTERVAL=60
 LOG_MAXIMUM_ENTRIES=50
 
 # Minimum uptime that must be reached for it to be considered a record.
-LOG_MINIMUM_UPTIMED=1h
+LOG_MINIMUM_UPTIME=1h
 
 # Minimum uptime before sending out e-mail.
 MAIL_MINIMUM_UPTIME=1d

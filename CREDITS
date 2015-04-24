@@ -60,3 +60,6 @@ Martin Natano <natano@natano.net>
 
 Baptiste Fontaine <b@ptistefontaine.fr>
 	(fix for configure step on non-linux platforms)
+
+Elijah Zarezky <elijah@zarezky.spb.ru>
+	(small legacy init and config fixes)

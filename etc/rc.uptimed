@@ -1,10 +1,29 @@
 #!/bin/bash
 #
-# Init file for uptimed
+# Init file for uptimed daemon
 #
 # chkconfig: 2345 95 05
-# description: Uptimed daemon
+# description: Uptimed is an uptime record daemon keeping track of the highest
+#              uptimes a computer system ever had. It uses the system boot time
+#              to keep sessions apart from each other. Uptimed comes with a
+#              console front-end to parse the records, which can also easily be
+#              used to show your records on a web page.
 #
+# config: /etc/uptimed.conf
+#
+### BEGIN INIT INFO
+# Provides: uptimed
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Uptimed is an uptime record daemon
+# Description: Uptimed is an uptime record daemon keeping track of the highest
+#              uptimes a computer system ever had. It uses the system boot time
+#              to keep sessions apart from each other. Uptimed comes with a
+#              console front-end to parse the records, which can also easily be
+#              used to show your records on a web page.
+### END INIT INFO
 
 RETVAL=0
 NAME="uptimed"
