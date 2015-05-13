@@ -6,6 +6,7 @@ Documentation=man:uptimed(8) man:uprecords(1)
 Type=notify
 ExecStart=@prefix@/sbin/uptimed -f
 Restart=on-failure
+User=daemon
 
 [Install]
 WantedBy=multi-user.target
