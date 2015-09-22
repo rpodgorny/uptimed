@@ -1,6 +1,7 @@
 [Unit]
 Description=Uptime record tracking daemon
 Documentation=man:uptimed(8) man:uprecords(1)
+After=time-sync.target
 
 [Service]
 Type=notify
