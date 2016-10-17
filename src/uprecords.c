@@ -572,7 +572,7 @@ void print_help(char *argv[])
 	printf("  -K             reverse sort by sysinfo\n");
 	printf("  -d             print downtime seen before every uptimes instead of system\n");
 	printf("  -c             do not show current entry if not in top entries\n");
-	printf("  -f             run continously in a loop\n");
+	printf("  -f             run continuously in a loop\n");
 	printf("  -s             do not print extra statistics\n");
 	printf("  -w             wide output (more than 80 cols per line)\n");
 	printf("  -i INTERVAL    use INTERVAL seconds for loop instead of 5, implies -f\n");
