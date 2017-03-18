@@ -1,11 +1,3 @@
-Contents
-========
-
-1. Introduction
-2. Availability
-3. Acknowledgments
-4. Contacting the author
-
 1. Introduction
 ===============
 
