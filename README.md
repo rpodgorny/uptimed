@@ -6,7 +6,7 @@ computer system ever had. It uses the system boot time to keep sessions
 apart from each other. Uptimed comes with a console front-end to parse the
 records, which can also easily be used to show your records on a web page.
 
-The original author is Rob Caper but since version 0.3.4 I (Radek Podgorny)
+The original author is Rob Kaper but since version 0.3.4 I (Radek Podgorny)
 took over the maintainership as Rob is overwhelmed by work (and so am I
 but I try my best). Remember, we're talking about about maintainance only.
 Still, feel free to contribute anything, branching and merging is not
