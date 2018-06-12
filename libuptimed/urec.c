@@ -172,10 +172,10 @@ time_t read_uptime(void) {
 #ifdef PLATFORM_SOLARIS
 time_t read_uptime(void) {
 	int fd;
-	struct utmp ut;
+	struct utmpx ut;
 	int found=0;
 
-	fd = open (UTMP_FILE, O_RDONLY);
+	fd = open(UTMPX_FILE, O_RDONLY);
 	if (fd >= 0) {
 		while (!found) {
 			if (read(fd, &ut, sizeof(ut)) < 0) {
@@ -187,7 +187,7 @@ time_t read_uptime(void) {
 		close(fd);
 	}
 
-	if (found == 1) return time(0) - ut.ut_time;
+	if (found == 1) return time(0) - ut.ut_tv.tv_sec;
 
 	return 0;
 }
@@ -332,11 +332,11 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	int fd;
-	struct utmp ut;
+	struct utmpx ut;
 	int found = 0;
 	time_t bootid = 0;
 
-	fd = open (UTMP_FILE, O_RDONLY);
+	fd = open (UTMPX_FILE, O_RDONLY);
 	if (fd >= 0) {
 		while(!found) {
 			if (read(fd, &ut, sizeof(ut)) < 0) {
@@ -348,7 +348,7 @@ int createbootid(void) {
 		close(fd);
 	}
 
-	if (found == 1) bootid = ut.ut_time;
+	if (found == 1) bootid = ut.ut_tv.tv_sec;
 
 	f = fopen(FILE_BOOTID, "w");
 	if (!f) {
