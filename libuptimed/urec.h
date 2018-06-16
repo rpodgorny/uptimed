@@ -36,7 +36,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #ifdef PLATFORM_SOLARIS
 #include <unistd.h>
 #include <sys/time.h>
-#include <utmp.h>
+#include <utmpx.h>
 #include <fcntl.h>
 #endif
 
