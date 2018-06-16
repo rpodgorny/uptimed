@@ -1,5 +1,4 @@
-1. Introduction
-===============
+## 1. Introduction
 
 Uptimed is an uptime record daemon keeping track of the highest uptimes a
 computer system ever had. It uses the system boot time to keep sessions
@@ -12,15 +11,13 @@ but I try my best). Remember, we're talking about about maintainance only.
 Still, feel free to contribute anything, branching and merging is not
 a problem.
 
-2. Availability
-===============
+## 2. Availability
 
 You can always get the latest release from the Uptimed github repository:
 
 https://github.com/rpodgorny/uptimed/
 
-3. Acknowledgments
-==================
+## 3. Acknowledgments
 
 Uptimed was inspired by a similar utility called 'ud', but is completely
 different by design. Instead of using PID files to prevent multiple
@@ -30,8 +27,7 @@ accidentely killing Uptimed or running multiple instances of it.
 
 For a list of contributors to Uptimed, please read the CREDITS file.
 
-4. Contacting the author/maintainer
-===================================
+## 4. Contacting the author/maintainer
 
 Questions, comments, bugfixes, patches: Radek Podgorny <radek@podgorny.cz>
 
