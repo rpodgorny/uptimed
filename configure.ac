@@ -23,6 +23,14 @@ case "$host" in
     ;;
   *-solaris*)
     AC_DEFINE(PLATFORM_SOLARIS, 1, [Define if you are compiling for Solaris])
+    AC_ARG_WITH([smfsitemanifestdir],
+        AS_HELP_STRING([--with-smfsitemanifestdir=DIR], [Directory for SMF site manifest files [default=/var/svc/manifest/site]]),
+        [], [with_smfsitemanifestdir=/var/svc/manifest/site])
+        if test "x$with_smfsitemanifestdir" != xno; then
+            AC_SUBST([smfsitemanifestdir], [$with_smfsitemanifestdir])
+            AC_OUTPUT([etc/uptimed.xml])
+            AC_OUTPUT([etc/uptimed-bootid.xml])
+        fi
     ;;
   *-ibm-aix*)
     AC_DEFINE(PLATFORM_AIX, 1, [Define if you are compiling for AIX])
@@ -60,6 +68,7 @@ case "$host" in
 esac
 
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ])
+AM_CONDITIONAL(HAVE_SMF, [test -n "$with_smfsitemanifestdir" -a "x$with_smfsitemanifestdir" != xno ])
 
 AC_REPLACE_FUNCS(getopt)
 AC_CHECK_HEADERS(getopt.h)
