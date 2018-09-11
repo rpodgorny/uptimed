@@ -7,7 +7,6 @@
 *.a
 *.la
 *.so
-*.in
 *.sub
 *.pc
 *.orig
@@ -19,10 +18,12 @@
 .deps
 .libs
 Makefile
+Makefile.in
 aclocal.m4
 autom4te.cache
 compile
 config.h
+config.h.in
 config.guess
 config.status
 confdefs.h
@@ -67,4 +68,6 @@ TAGS
 src/uptimed
 src/uprecords
 etc/uptimed.service
+etc/uptimed.xml
+etc/uptimed-bootid.xml
 uptimed.spec
