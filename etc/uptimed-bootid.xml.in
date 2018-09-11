@@ -19,13 +19,12 @@
 		<service_fmri value="svc:/system/filesystem/local" />
 	</dependency>
 
-        <dependency
-                name="milestone"
-                grouping="require_all"
-                restart_on="none"
-                type="service">
-                <service_fmri value="svc:/milestone/single-user" />
-        </dependency>
+	<dependency name="milestone"
+		grouping="require_all"
+		restart_on="none"
+		type="service">
+		<service_fmri value="svc:/milestone/single-user" />
+	</dependency>
 
 	<exec_method
 		type="method"
