@@ -254,7 +254,7 @@ void displayrecords(int cls)
 		else
 			printf("</pre>\n");
 
-		printf("<small><a href=\"http://podgorny.cz/uptimed/\">uptimed</a> by Rob Kaper (<a href=\"mailto:rob@unixcode.org\">rob@unixcode.org</a>) - currently maintained by Radek Podgorny (<a href=\"mailto:radek@podgorny.cz\">radek@podgorny.cz</a>)</small>\n");
+		printf("<small><a href=\"https://github.com/rpodgorny/uptimed\">uptimed</a> by Rob Kaper (<a href=\"mailto:rob@unixcode.org\">rob@unixcode.org</a>) - currently maintained by Radek Podgorny (<a href=\"mailto:radek@podgorny.cz\">radek@podgorny.cz</a>)</small>\n");
 	}
 }
 
