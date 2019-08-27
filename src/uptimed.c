@@ -29,7 +29,11 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include <getopt.h>
 #endif
 
+#ifdef __ANDROID__
+extern Urec *u_current;
+#else
 Urec *u_current = NULL;
+#endif
 int our_pos=0;
 int update_interval=60, create_bootid=0, send_email=0, foreground=0;
 time_t log_min_uptime = 0, mail_min_uptime = 0;
@@ -342,6 +346,9 @@ void scan_args(int argc, char *argv[])
 		switch(index)
 		{
 			case '?':
+#ifdef __ANDROID__
+				fputc('\n', stderr);
+#endif
 				print_help(argv);
 				break;
 			case 'v':
