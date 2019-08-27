@@ -54,8 +54,13 @@ extern void snprintf(char *, ...);
 
 #include "misc.h"
 
+#ifdef __ANDROID__
+#define FILE_BOOTID "/data/uptimed/bootid"
+#define FILE_RECORDS "/data/uptimed/records"
+#else
 #define FILE_BOOTID "/var/spool/uptimed/bootid"
 #define FILE_RECORDS "/var/spool/uptimed/records"
+#endif
 
 typedef struct urec {
 	time_t utime; /* uptime */

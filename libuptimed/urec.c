@@ -20,6 +20,9 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include "../config.h"
 #include "urec.h"
 
+#ifdef __ANDROID__
+Urec *u_current;
+#endif
 Urec *urec_list = NULL;
 static Urec *urec_last = NULL;
 
