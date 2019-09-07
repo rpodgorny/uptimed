@@ -26,6 +26,17 @@ Urec *u_current;
 Urec *urec_list = NULL;
 static Urec *urec_last = NULL;
 
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD)
+/*
+ * Boot times on Linux and Darwin can vary on a single boot,
+ * let's compare them with some fuzz to avoid duplicate boot entries.
+ * See: https://github.com/rpodgorny/uptimed/issues/2
+ */
+#define BOOT_TIME_FUZZ 30
+#else
+#define BOOT_TIME_FUZZ 0
+#endif
+
 Urec *add_urec(time_t utime, time_t btime, char *sys) {
 	Urec *u, *tmpu, *uprev = NULL;
 
@@ -235,6 +246,17 @@ void calculate_downtime(void) {
 	urec_list = sort_urec(sorted_list, 0);
 }
 
+static int btime_equal_fuzz(time_t first, time_t second) {
+	time_t diff;
+
+	if (first > second)
+		diff = first - second;
+	else
+		diff = second - first;
+
+	/* BOOT_TIME_FUZZ is a window so diff can be its half either way */
+	return diff <= BOOT_TIME_FUZZ / 2;
+}
 
 void read_records(time_t current) {
 	FILE *f;
@@ -288,7 +310,8 @@ dbtry:
 
 			strncpy(sys, buf, SYSMAX);
 			sys[SYSMAX]='\0';
-			if (utime > 0 && btime != current) add_urec(utime, btime, sys);
+			if (utime > 0 && !btime_equal_fuzz(btime, current))
+				add_urec(utime, btime, sys);
 		}
 		fgets(str, sizeof(str), f);
 	}
