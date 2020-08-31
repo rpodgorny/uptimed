@@ -63,3 +63,6 @@ Baptiste Fontaine <b@ptistefontaine.fr>
 
 Elijah Zarezky <elijah@zarezky.spb.ru>
 	(small legacy init and config fixes)
+
+François Tigeot <ftigeot@wolfpond.org>
+	(support for compilation on DragonFly)
