@@ -45,6 +45,9 @@ case "$host" in
   *-darwin*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;
+  *-dragonfly*)
+    AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
+    ;;
   *-gnu*)
     AC_DEFINE(PLATFORM_GNU, 1, [Define if you are compiling for *GNU])
     ;;
