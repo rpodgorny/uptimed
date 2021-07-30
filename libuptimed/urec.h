@@ -81,9 +81,7 @@ time_t read_uptime(void);
 void calculate_downtime(void);
 void read_records(time_t);
 void save_records(int, time_t);
-#ifndef PLATFORM_BSD
 int createbootid(void);
-#endif
 int compare_urecs(Urec *, Urec *, int);
 Urec *sort_urec(Urec *, int);
 time_t readbootid(void);
