@@ -66,3 +66,6 @@ Elijah Zarezky <elijah@zarezky.spb.ru>
 
 François Tigeot <ftigeot@wolfpond.org>
 	(support for compilation on DragonFly)
+
+Ryan Schmidt <git@ryandesign.com>
+	(various updates for compilation on macos)
