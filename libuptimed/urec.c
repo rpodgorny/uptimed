@@ -63,7 +63,7 @@ Urec *add_urec(time_t utime, time_t btime, char *sys) {
 
 void del_urec(Urec *u) {
 	Urec *tmpu = urec_list;
-	
+
 	if (u == urec_list) {
 		urec_list=u->next;
 		if (!urec_list) urec_last = NULL;
@@ -167,7 +167,7 @@ time_t read_uptime(void) {
 	if (sysctl (mib, 2, &boottime, &size, NULL, 0) != -1 && boottime.tv_sec!= 0) {
 		up = now - boottime.tv_sec;
 	}
-	
+
 	return up;
 }
 #endif
@@ -244,7 +244,7 @@ void read_records(time_t current) {
 	char buf[256], sys[SYSMAX+1];
 	struct stat filestat, filestatold;
 	int useold = 0;
-	
+
 	if (stat(FILE_RECORDS, &filestat))
 		useold = 1;
 	if (stat(FILE_RECORDS".old", &filestatold))
@@ -268,12 +268,12 @@ dbtry:
 			printf("uptimed: no useable database found.\n");
 			return;
 	}
-			
+
 	if (!f) {
 		printf("uptimed: error opening database for reading.\n");
 		return;
 	}
-	
+
 	fgets(str, sizeof(str), f);
 	while (!feof(f)) {
 		/* Check for validity of input string. */
@@ -293,7 +293,7 @@ dbtry:
 		fgets(str, sizeof(str), f);
 	}
 	fclose(f);
-	
+
 	calculate_downtime();
 }
 
@@ -301,7 +301,7 @@ void save_records(int max, time_t log_threshold) {
 	FILE *f;
 	Urec *u;
 	int i = 0;
-	
+
 	f = fopen(FILE_RECORDS".tmp", "w");
 	if (!f) {
 		printf("uptimed: cannot write to %s\n", FILE_RECORDS);
@@ -368,7 +368,7 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	struct pst_static _pst_static;
-	
+
 	pstat_getstatic(&_pst_static, sizeof(_pst_static), (size_t)1, 0);
 	f=fopen(FILE_BOOTID, "w");
 	if (!f) {
@@ -385,9 +385,9 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	time_t bootid=0;
-	
+
 	bootid=time(0);
-	
+
 	f = fopen(FILE_BOOTID, "w");
 	if (!f) {
 		printf("Error writing bootid file, exiting!\n");  exit(-1);
