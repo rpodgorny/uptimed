@@ -17,7 +17,7 @@ echo autoheader...
 
 autoheader || exit 1
 
-echo -n "libtoolize... "
+printf "%s" "libtoolize... "
 if ( (glibtoolize --version) < /dev/null > /dev/null 2>&1 ); then
 	echo "using glibtoolize"
 	glibtoolize --automake --copy --force || exit 1
