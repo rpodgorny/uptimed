@@ -25,7 +25,7 @@ elif ( (libtoolize --version) < /dev/null > /dev/null 2>&1 ) ; then
 	echo "using libtoolize"
 	libtoolize --automake --copy --force || exit 1
 else
-    echo "libtoolize nor glibtoolize not found"
+    echo "neither libtoolize nor glibtoolize found"
     exit 1
 fi
 
