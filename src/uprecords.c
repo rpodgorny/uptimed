@@ -25,7 +25,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #define SYSWIDTH 24
 #define DOWNWIDTH 20
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(PLATFORM_AIX)
 extern Urec *u_current;
 #else
 Urec	*u_current;

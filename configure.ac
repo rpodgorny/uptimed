@@ -24,6 +24,9 @@ case "$host" in
   *-solaris*)
     AC_DEFINE(PLATFORM_SOLARIS, 1, [Define if you are compiling for Solaris])
     ;;
+  *-ibm-aix*)
+    AC_DEFINE(PLATFORM_AIX, 1, [Define if you are compiling for AIX])
+    ;;
   *-freebsd*)
     AC_DEFINE(PLATFORM_BSD, 1, [Define if you are compiling for *BSD])
     ;;

@@ -20,7 +20,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include "../config.h"
 #include "urec.h"
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(PLATFORM_AIX)
 Urec *u_current;
 #endif
 Urec *urec_list = NULL;
@@ -108,6 +108,9 @@ char *read_sysinfo(void) {
 #endif
 #ifdef PLATFORM_GNU
 		return "GNU";
+#endif
+#ifdef PLATFORM_AIX
+		return "AIX";
 #endif
 #ifdef PLATFORM_UNKNOWN
 		return "unknown";
@@ -204,7 +207,7 @@ time_t read_uptime(void) {
 }
 #endif
 
-#if defined(PLATFORM_UNKNOWN) || defined(PLATFORM_GNU)
+#if defined(PLATFORM_UNKNOWN) || defined(PLATFORM_GNU) || defined(PLATFORM_AIX)
 time_t read_uptime(void) {
 /*
  * This is a quick and inaccurate hack calculating the uptime from the
@@ -321,7 +324,7 @@ void save_records(int max, time_t log_threshold) {
 	rename(FILE_RECORDS".tmp", FILE_RECORDS);
 }
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD) || defined(PLATFORM_GNU)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD) || defined(PLATFORM_GNU) || defined(PLATFORM_AIX)
 int createbootid(void) {
 	/* these platforms doesn't need to create a bootid file.
 	 * readbootid() fetches it directly from the system every time.
@@ -439,6 +442,17 @@ time_t readbootid(void) {
 		exit(-1);
 	}
 	return bootid;
+#elif defined PLATFORM_AIX
+	struct psinfo psinfo;
+	int fd = open("/proc/0/psinfo", O_RDONLY);
+	int s = read(fd, &psinfo, sizeof psinfo);
+	if(s < (char *)&psinfo.pr_start - (char *)&psinfo + sizeof psinfo.pr_start) {
+		int e = errno;
+		fprintf(stderr, "Failed to read /proc/0/psinfo for boot time: %s\n",
+			s < 0 ? (e ? strerror(e) : "Unknown error") : "Short read");
+		exit(-1);
+	}
+	return psinfo.pr_start.tv_sec;
 #else
 	FILE *f;
 	char str[256];
