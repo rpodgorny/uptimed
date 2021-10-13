@@ -29,7 +29,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include <getopt.h>
 #endif
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(PLATFORM_AIX)
 extern Urec *u_current;
 #else
 Urec *u_current = NULL;

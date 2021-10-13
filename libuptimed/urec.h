@@ -48,6 +48,13 @@ extern void snprintf(char *, ...);
 #include <sys/pstat.h>
 #endif
 
+#ifdef PLATFORM_AIX
+#include <sys/procfs.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#endif
+
 #ifdef PLATFORM_UNKNOWN
 #include <time.h>
 #endif
