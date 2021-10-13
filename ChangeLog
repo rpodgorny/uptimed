@@ -1,3 +1,7 @@
+0.4.5
+-----
+- added AIX port
+
 0.4.4
 -----
 - updates for compilation on macos

@@ -69,3 +69,6 @@ François Tigeot <ftigeot@wolfpond.org>
 
 Ryan Schmidt <git@ryandesign.com>
 	(various updates for compilation on macos)
+
+WHR <msl0000023508@gmail.com>
+	(port to AIX)
