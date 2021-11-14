@@ -1,3 +1,8 @@
+0.4.6
+-----
+- better deuplicate entry detection on linux
+- added manifest for solaris smf
+
 0.4.5
 -----
 - added AIX port
