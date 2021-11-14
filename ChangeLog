@@ -1,6 +1,6 @@
 0.4.6
 -----
-- better deuplicate entry detection on linux
+- better deuplicate entry detection on linux and bsd
 - added manifest for solaris smf
 
 0.4.5
