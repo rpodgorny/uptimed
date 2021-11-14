@@ -72,3 +72,6 @@ Ryan Schmidt <git@ryandesign.com>
 
 WHR <msl0000023508@gmail.com>
 	(port to AIX)
+
+Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+	(better duplicate detection on linux)
