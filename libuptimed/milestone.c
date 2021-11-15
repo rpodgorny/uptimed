@@ -26,7 +26,7 @@ Milestone *add_milestone(time_t time, char *desc)
 {
 	Milestone *m, *tmpm, *mprev=NULL;
 
-	/* Allocate memory for the new entry. */	
+	/* Allocate memory for the new entry. */
 	if ((m=malloc(sizeof(Milestone))) == NULL)
 	{
 		printf("error mallocing milestone struct. this is serious shit! exiting.\n");
@@ -59,7 +59,7 @@ Milestone *add_milestone(time_t time, char *desc)
 void del_milestone(Milestone *m)
 {
 	Milestone *tmpm=milestone_list;
-	
+
 	if (m==milestone_list)
 	{
 		milestone_list=m->next;
@@ -83,7 +83,7 @@ Milestone *find_next_milestone(time_t offset)
 	if (m)
 		return m;
 	else
-		return NULL;	 
+		return NULL;
 }
 
 time_t scantime(char *str) {

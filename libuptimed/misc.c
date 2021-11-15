@@ -53,10 +53,9 @@ void cat(char *filename)
 {
 	FILE *f;
 	char str[512];
-	
-	f=fopen(filename, "r");
-	if (!f)
-		return;
+
+	f = fopen(filename, "r");
+	if (!f) return;
 
 	fgets(str, sizeof(str), f);
 	while (!feof(f))
