@@ -7,6 +7,7 @@ After=time-sync.target
 Type=notify
 ExecStart=@prefix@/sbin/uptimed -f
 Restart=on-failure
+User=daemon
 
 [Install]
 WantedBy=multi-user.target

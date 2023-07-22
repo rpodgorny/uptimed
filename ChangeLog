@@ -1,3 +1,10 @@
+
+0.4.
+-----
+- systemd unit: run as 'daemon' user, not root;
+  packagers should make sure to chown /var/spool/uptimed/
+  on update
+
 0.4.6
 -----
 - better deuplicate entry detection on linux and bsd
