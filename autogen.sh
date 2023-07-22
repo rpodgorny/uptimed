@@ -17,7 +17,7 @@ echo autoheader...
 
 autoheader || exit 1
 
-echo -n "libtoolize... "
+printf "%s" "libtoolize... "
 if ( (glibtoolize --version) < /dev/null > /dev/null 2>&1 ); then
 	echo "using glibtoolize"
 	glibtoolize --automake --copy --force || exit 1
@@ -25,7 +25,7 @@ elif ( (libtoolize --version) < /dev/null > /dev/null 2>&1 ) ; then
 	echo "using libtoolize"
 	libtoolize --automake --copy --force || exit 1
 else
-    echo "libtoolize nor glibtoolize not found"
+    echo "neither libtoolize nor glibtoolize found"
     exit 1
 fi
 

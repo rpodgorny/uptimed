@@ -20,8 +20,22 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #include "../config.h"
 #include "urec.h"
 
+#if defined(__ANDROID__) || defined(PLATFORM_AIX)
+Urec *u_current;
+#endif
 Urec *urec_list = NULL;
 static Urec *urec_last = NULL;
+
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD)
+/*
+ * Boot times on Linux and Darwin can vary on a single boot,
+ * let's compare them with some tolerance to avoid duplicate boot entries.
+ * See: https://github.com/rpodgorny/uptimed/issues/2
+ */
+#define BOOT_TIME_TOLERANCE 30
+#else
+#define BOOT_TIME_TOLERANCE 0
+#endif
 
 Urec *add_urec(time_t utime, time_t btime, char *sys) {
 	Urec *u, *tmpu, *uprev = NULL;
@@ -60,7 +74,7 @@ Urec *add_urec(time_t utime, time_t btime, char *sys) {
 
 void del_urec(Urec *u) {
 	Urec *tmpu = urec_list;
-	
+
 	if (u == urec_list) {
 		urec_list=u->next;
 		if (!urec_list) urec_last = NULL;
@@ -106,6 +120,9 @@ char *read_sysinfo(void) {
 #ifdef PLATFORM_GNU
 		return "GNU";
 #endif
+#ifdef PLATFORM_AIX
+		return "AIX";
+#endif
 #ifdef PLATFORM_UNKNOWN
 		return "unknown";
 #endif
@@ -126,7 +143,7 @@ time_t read_uptime(void) {
 
 	/* clock_gettime() failed */
 	f=fopen("/proc/uptime", "r");
-	if (f > 0) {
+	if (f) {
 		if (fscanf(f, "%lf", &upseconds) > 0) {
 			fclose(f);
 			return((time_t)upseconds);
@@ -164,7 +181,7 @@ time_t read_uptime(void) {
 	if (sysctl (mib, 2, &boottime, &size, NULL, 0) != -1 && boottime.tv_sec!= 0) {
 		up = now - boottime.tv_sec;
 	}
-	
+
 	return up;
 }
 #endif
@@ -172,10 +189,10 @@ time_t read_uptime(void) {
 #ifdef PLATFORM_SOLARIS
 time_t read_uptime(void) {
 	int fd;
-	struct utmp ut;
+	struct utmpx ut;
 	int found=0;
 
-	fd = open (UTMP_FILE, O_RDONLY);
+	fd = open(UTMPX_FILE, O_RDONLY);
 	if (fd >= 0) {
 		while (!found) {
 			if (read(fd, &ut, sizeof(ut)) < 0) {
@@ -187,7 +204,7 @@ time_t read_uptime(void) {
 		close(fd);
 	}
 
-	if (found == 1) return time(0) - ut.ut_time;
+	if (found == 1) return time(0) - ut.ut_tv.tv_sec;
 
 	return 0;
 }
@@ -201,7 +218,7 @@ time_t read_uptime(void) {
 }
 #endif
 
-#if defined(PLATFORM_UNKNOWN) || defined(PLATFORM_GNU)
+#if defined(PLATFORM_UNKNOWN) || defined(PLATFORM_GNU) || defined(PLATFORM_AIX)
 time_t read_uptime(void) {
 /*
  * This is a quick and inaccurate hack calculating the uptime from the
@@ -232,6 +249,10 @@ void calculate_downtime(void) {
 	urec_list = sort_urec(sorted_list, 0);
 }
 
+static int btime_equal_tolerance(time_t first, time_t second) {
+	time_t diff = (first > second) ? (first - second) : (second - first);
+	return diff <= BOOT_TIME_TOLERANCE / 2;  /* BOOT_TIME_TOLERANCE is a window so diff can be its half either way */
+}
 
 void read_records(time_t current) {
 	FILE *f;
@@ -241,7 +262,7 @@ void read_records(time_t current) {
 	char buf[256], sys[SYSMAX+1];
 	struct stat filestat, filestatold;
 	int useold = 0;
-	
+
 	if (stat(FILE_RECORDS, &filestat))
 		useold = 1;
 	if (stat(FILE_RECORDS".old", &filestatold))
@@ -265,12 +286,12 @@ dbtry:
 			printf("uptimed: no useable database found.\n");
 			return;
 	}
-			
+
 	if (!f) {
 		printf("uptimed: error opening database for reading.\n");
 		return;
 	}
-	
+
 	fgets(str, sizeof(str), f);
 	while (!feof(f)) {
 		/* Check for validity of input string. */
@@ -285,12 +306,13 @@ dbtry:
 
 			strncpy(sys, buf, SYSMAX);
 			sys[SYSMAX]='\0';
-			if (utime > 0 && btime != current) add_urec(utime, btime, sys);
+			if (utime > 0 && !btime_equal_tolerance(btime, current))
+				add_urec(utime, btime, sys);
 		}
 		fgets(str, sizeof(str), f);
 	}
 	fclose(f);
-	
+
 	calculate_downtime();
 }
 
@@ -298,7 +320,7 @@ void save_records(int max, time_t log_threshold) {
 	FILE *f;
 	Urec *u;
 	int i = 0;
-	
+
 	f = fopen(FILE_RECORDS".tmp", "w");
 	if (!f) {
 		printf("uptimed: cannot write to %s\n", FILE_RECORDS);
@@ -318,7 +340,7 @@ void save_records(int max, time_t log_threshold) {
 	rename(FILE_RECORDS".tmp", FILE_RECORDS);
 }
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD) || defined(PLATFORM_GNU)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_BSD) || defined(PLATFORM_GNU) || defined(PLATFORM_AIX)
 int createbootid(void) {
 	/* these platforms doesn't need to create a bootid file.
 	 * readbootid() fetches it directly from the system every time.
@@ -332,11 +354,11 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	int fd;
-	struct utmp ut;
+	struct utmpx ut;
 	int found = 0;
 	time_t bootid = 0;
 
-	fd = open (UTMP_FILE, O_RDONLY);
+	fd = open (UTMPX_FILE, O_RDONLY);
 	if (fd >= 0) {
 		while(!found) {
 			if (read(fd, &ut, sizeof(ut)) < 0) {
@@ -348,7 +370,7 @@ int createbootid(void) {
 		close(fd);
 	}
 
-	if (found == 1) bootid = ut.ut_time;
+	if (found == 1) bootid = ut.ut_tv.tv_sec;
 
 	f = fopen(FILE_BOOTID, "w");
 	if (!f) {
@@ -365,7 +387,7 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	struct pst_static _pst_static;
-	
+
 	pstat_getstatic(&_pst_static, sizeof(_pst_static), (size_t)1, 0);
 	f=fopen(FILE_BOOTID, "w");
 	if (!f) {
@@ -382,9 +404,9 @@ int createbootid(void) {
 int createbootid(void) {
 	FILE *f;
 	time_t bootid=0;
-	
+
 	bootid=time(0);
-	
+
 	f = fopen(FILE_BOOTID, "w");
 	if (!f) {
 		printf("Error writing bootid file, exiting!\n");  exit(-1);
@@ -436,6 +458,17 @@ time_t readbootid(void) {
 		exit(-1);
 	}
 	return bootid;
+#elif defined PLATFORM_AIX
+	struct psinfo psinfo;
+	int fd = open("/proc/0/psinfo", O_RDONLY);
+	int s = read(fd, &psinfo, sizeof psinfo);
+	if(s < (char *)&psinfo.pr_start - (char *)&psinfo + sizeof psinfo.pr_start) {
+		int e = errno;
+		fprintf(stderr, "Failed to read /proc/0/psinfo for boot time: %s\n",
+			s < 0 ? (e ? strerror(e) : "Unknown error") : "Short read");
+		exit(-1);
+	}
+	return psinfo.pr_start.tv_sec;
 #else
 	FILE *f;
 	char str[256];

@@ -1,9 +1,34 @@
+
 0.4.
 -----
-
 - systemd unit: run as 'daemon' user, not root;
   packagers should make sure to chown /var/spool/uptimed/
   on update
+
+0.4.6
+-----
+- better deuplicate entry detection on linux and bsd
+- added manifest for solaris smf
+
+0.4.5
+-----
+- added AIX port
+
+0.4.4
+-----
+- updates for compilation on macos
+
+0.4.3
+-----
+- support for dragonfly
+
+0.4.2
+-----
+- support for android
+
+0.4.1
+-----
+- updates for modern solaris
 
 0.4.0
 -----

@@ -36,7 +36,7 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #ifdef PLATFORM_SOLARIS
 #include <unistd.h>
 #include <sys/time.h>
-#include <utmp.h>
+#include <utmpx.h>
 #include <fcntl.h>
 #endif
 
@@ -48,14 +48,26 @@ extern void snprintf(char *, ...);
 #include <sys/pstat.h>
 #endif
 
+#ifdef PLATFORM_AIX
+#include <sys/procfs.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#endif
+
 #ifdef PLATFORM_UNKNOWN
 #include <time.h>
 #endif
 
 #include "misc.h"
 
+#ifdef __ANDROID__
+#define FILE_BOOTID "/data/uptimed/bootid"
+#define FILE_RECORDS "/data/uptimed/records"
+#else
 #define FILE_BOOTID "/var/spool/uptimed/bootid"
 #define FILE_RECORDS "/var/spool/uptimed/records"
+#endif
 
 typedef struct urec {
 	time_t utime; /* uptime */
@@ -76,9 +88,7 @@ time_t read_uptime(void);
 void calculate_downtime(void);
 void read_records(time_t);
 void save_records(int, time_t);
-#ifndef PLATFORM_BSD
 int createbootid(void);
-#endif
 int compare_urecs(Urec *, Urec *, int);
 Urec *sort_urec(Urec *, int);
 time_t readbootid(void);

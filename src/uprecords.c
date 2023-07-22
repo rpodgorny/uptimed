@@ -25,7 +25,11 @@ uptimed - Copyright (c) 1998-2004 Rob Kaper <rob@unixcode.org>
 #define SYSWIDTH 24
 #define DOWNWIDTH 20
 
+#if defined(__ANDROID__) || defined(PLATFORM_AIX)
+extern Urec *u_current;
+#else
 Urec	*u_current;
+#endif
 time_t	first, prev, tenth, second;
 int		runas_cgi=0, show_max=10, show_milestone=0, layout=PRE, show_downtime=0, run_loop=0, update_interval=5;
 int		sort_by=0, no_ansi=0, no_stats=0, no_current=0, wide_out=0;
@@ -42,7 +46,7 @@ int main(int argc, char *argv[])
 
 		/* Print content-type header. */
 		printf("Content-type: text/html\n\n");
-		
+
 		/* Read CGI config file. */
 		read_config_cgi();
 	}
@@ -99,7 +103,7 @@ void displayrecords(int cls)
 	time_t since, now, tmp, totalutime = 0, totaldtime = 0;
 	float availability;
 	int	i=0, currentdone=0;
-	
+
 	now=time(0);
 
 	/* Open output for CGI. */
@@ -214,7 +218,7 @@ void displayrecords(int cls)
 		} else {
 			tmp=now + second - u_current->utime;
 			print_entry(u_current->utime - second - 1, "since", tmp, "NewRec", 0, 0);
-		}		
+		}
 		if (show_milestone)
 		{
 			Milestone *m;
@@ -226,19 +230,19 @@ void displayrecords(int cls)
 				print_entry(m->time - u_current->utime + 1, m->desc, tmp, "mst in", 0, 0);
 			}
 		}
-		
-		/* Printing total uptime and downtime. */	
+
+		/* Printing total uptime and downtime. */
 		for (u = urec_list; u; u = u->next){
 			if (u->dtime == 0) {
-				since = u->btime;	
+				since = u->btime;
 			}
 			totaldtime += u->dtime;
 			totalutime += u->utime;
 		}
-		
+
 		print_entry(totalutime, "since", since, "up", 0, 0);
 		print_entry(totaldtime, "since", since, "down", 0, 0);
-		
+
 		/* Printing availability. */
 		availability = (float)totalutime / (float)(totalutime + totaldtime) * 100;
 		print_availability(availability, since);
@@ -254,7 +258,7 @@ void displayrecords(int cls)
 		else
 			printf("</pre>\n");
 
-		printf("<small><a href=\"http://podgorny.cz/uptimed/\">uptimed</a> by Rob Kaper (<a href=\"mailto:rob@unixcode.org\">rob@unixcode.org</a>) - currently maintained by Radek Podgorny (<a href=\"mailto:radek@podgorny.cz\">radek@podgorny.cz</a>)</small>\n");
+		printf("<small><a href=\"https://github.com/rpodgorny/uptimed\">uptimed</a> by Rob Kaper (<a href=\"mailto:rob@unixcode.org\">rob@unixcode.org</a>) - currently maintained by Radek Podgorny (<a href=\"mailto:radek@podgorny.cz\">radek@podgorny.cz</a>)</small>\n");
 	}
 }
 
@@ -264,10 +268,10 @@ void read_config(void)
 	char str[256];
 	time_t milestone_time;
 	char *milestone_str;
-	
+
 	f=fopen(FILE_CONFIG, "r");
 	if (!f) return;
-		
+
 	fgets(str, sizeof(str), f);
 	while (!feof(f))
 	{
@@ -287,10 +291,10 @@ void read_config_cgi(void)
 	FILE *f;
 	char str[256];
 
-	f=fopen("/etc/uprecords-cgi/uprecords.conf", "r");	
+	f=fopen("/etc/uprecords-cgi/uprecords.conf", "r");
 	if (!f)
 		return;
-	
+
 	fgets(str, sizeof(str), f);
 	while(!feof(f))
 	{
@@ -305,7 +309,7 @@ void read_config_cgi(void)
 		}
 		else if (!strncmp(str, "SHOW_MAX", 8))
 			show_max=atoi(str+9);
-		else if (!strncmp(str, "TYPE", 4)) 
+		else if (!strncmp(str, "TYPE", 4))
 		{
 			if (!strncmp(str+5, "system", 6))
 				show_downtime = 0;
@@ -326,13 +330,13 @@ void print_entry(time_t utime, char *sys, time_t btime, char *ident, int pos, in
 	{
 		bold = "<b>";
 		plain = "</b>";
-		
+
 		if (hilite)
 			current = " (current)";
 
 		if (!strcmp(ident, "-> "))
 			ident="-&gt; ";
-		
+
 		if (layout!=PRE)
 		{
 			if (!strcmp(ident, "1up in"))
@@ -396,7 +400,7 @@ void print_downtime_entry(time_t utime, time_t dtime, time_t btime, char *ident,
 	{
 		bold = "<b>";
 		plain = "</b>";
-		
+
 		if (hilite)
 			current = " (current)";
 
@@ -447,13 +451,13 @@ void print_downtime_entry(time_t utime, time_t dtime, time_t btime, char *ident,
 void print_availability(float percent, time_t since)
 {
 	char *ctimec = NULL, *msg = "%up";
-	
-	if (runas_cgi) {		
+
+	if (runas_cgi) {
 		if (layout!=PRE) {
 			msg = "Availability (%)";
 		}
 	}
-	
+
 	switch(layout)
 	{
 		case TABLE:
@@ -471,7 +475,7 @@ void print_availability(float percent, time_t since)
 		default:
 			if (ctimec = ctime(&since)) {
 				ctimec[TIMEMAX-1] = '\0';	/* erase the ending '\n' */
-			}	
+			}
 			printf("%6s %20.3f | %-*s %*s\n", msg, percent, SYSWIDTH, "since", TIMEMAX, ctimec);
 	}
 }
@@ -490,6 +494,9 @@ void scan_args(int argc, char *argv[])
 		switch(i)
 		{
 				case '?':
+#ifdef __ANDROID__
+						fputc('\n', stderr);
+#endif
 						print_help(argv);
 						break;
 				case 'a':
@@ -572,7 +579,7 @@ void print_help(char *argv[])
 	printf("  -K             reverse sort by sysinfo\n");
 	printf("  -d             print downtime seen before every uptimes instead of system\n");
 	printf("  -c             do not show current entry if not in top entries\n");
-	printf("  -f             run continously in a loop\n");
+	printf("  -f             run continuously in a loop\n");
 	printf("  -s             do not print extra statistics\n");
 	printf("  -w             wide output (more than 80 cols per line)\n");
 	printf("  -i INTERVAL    use INTERVAL seconds for loop instead of 5, implies -f\n");
