@@ -136,10 +136,10 @@ time_t read_uptime(void) {
 	double upseconds = 0;
 	struct sysinfo	si;
 
-
+#ifdef CLOCK_BOOTTIME
 	if (clock_gettime(CLOCK_BOOTTIME, &ts) == 0)
 		return ts.tv_sec;
-
+#endif
 
 	/* clock_gettime() failed */
 	f=fopen("/proc/uptime", "r");
