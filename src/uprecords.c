@@ -489,11 +489,11 @@ void scan_args(int argc, char *argv[])
 {
 	int i;
 
-	while((i = getopt(argc, argv, "i:m:?acbdBkKfsMwv")) != EOF)
+	while((i = getopt(argc, argv, "i:m:hacbdBkKfsMwv")) != EOF)
 	{
 		switch(i)
 		{
-				case '?':
+				case 'h':
 #ifdef __ANDROID__
 						fputc('\n', stderr);
 #endif
@@ -564,14 +564,14 @@ void scan_args(int argc, char *argv[])
 
 void print_usage(char *argv[])
 {
-	printf("usage: %s [-?acdfMswv] [-i interval] [-m count]\n", argv[0]);
+	printf("usage: %s [-hacdfMswv] [-i interval] [-m count]\n", argv[0]);
 	exit(1);
 }
 
 void print_help(char *argv[])
 {
 	printf("usage: %s [OPTION]...\n\n", argv[0]);
-	printf("  -?             this help\n");
+	printf("  -h             this help\n");
 	printf("  -a             do not print ansi codes\n");
 	printf("  -b             sort by boottime\n");
 	printf("  -B             reverse sort by boottime\n");

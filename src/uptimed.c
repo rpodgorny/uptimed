@@ -341,11 +341,11 @@ void scan_args(int argc, char *argv[])
 {
 	int index;
 
-	while((index = getopt(argc, argv, "e:i:m:p:t:?bfv")) != EOF)
+	while((index = getopt(argc, argv, "e:i:m:p:t:hbfv")) != EOF)
 	{
 		switch(index)
 		{
-			case '?':
+			case 'h':
 #ifdef __ANDROID__
 				fputc('\n', stderr);
 #endif
@@ -400,7 +400,7 @@ void scan_args(int argc, char *argv[])
 
 void print_usage(char *argv[])
 {
-	printf("usage: %s [-?bv] [-e email] [-i interval] [-m count]\n", argv[0]);
+	printf("usage: %s [-hbv] [-e email] [-i interval] [-m count]\n", argv[0]);
 	printf("               [-p pidfile] [-t log threshold]\n");
 	exit(1);
 }
@@ -409,7 +409,7 @@ void print_help(char *argv[])
 {
 	printf("usage: %s [OPTION]...\n", argv[0]);
 	printf("commandline options override settings from configuration file\n\n");
-	printf("  -?             this help\n");
+	printf("  -h             this help\n");
 	printf("  -b             create bootid and exit [ignored on FreeBSD]\n");
 	printf("  -f             run in foreground [don't fork]\n");
 	printf("  -e EMAIL       send mail to EMAIL at milestones/records\n");

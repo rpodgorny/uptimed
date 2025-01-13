@@ -119,7 +119,7 @@ struct option
 
    Return the option character from OPTS just read.  Return -1 when
    there are no more options.  For unrecognized options, or options
-   missing arguments, `optopt' is set to the option letter, and '?' is
+   missing arguments, `optopt' is set to the option letter, and 'h' is
    returned.
 
    The OPTS string is a list of characters which are recognized option

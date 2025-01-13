@@ -151,7 +151,7 @@ int opterr = 1;
    This must be initialized on some systems to avoid linking in the
    system's own getopt implementation.  */
 
-int optopt = '?';
+int optopt = 'h';
 
 /* Describe how to deal with options that follow non-option ARGV-elements.
 
@@ -466,8 +466,8 @@ _getopt_initialize (argc, argv, optstring)
 
    OPTSTRING is a string containing the legitimate option characters.
    If an option character is seen that is not listed in OPTSTRING,
-   return '?' after printing an error message.  If you set `opterr' to
-   zero, the error message is suppressed but we still return '?'.
+   return 'h' after printing an error message.  If you set `opterr' to
+   zero, the error message is suppressed but we still return 'h'.
 
    If a char in OPTSTRING is followed by a colon, that means it wants an arg,
    so the following text in the same ARGV-element, or the text of the following
@@ -683,7 +683,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	  nextchar += strlen (nextchar);
 	  optind++;
 	  optopt = 0;
-	  return '?';
+	  return 'h';
 	}
 
       if (pfound != NULL)
@@ -715,7 +715,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		  nextchar += strlen (nextchar);
 
 		  optopt = pfound->val;
-		  return '?';
+		  return 'h';
 		}
 	    }
 	  else if (pfound->has_arg == 1)
@@ -730,7 +730,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 			   argv[0], argv[optind - 1]);
 		  nextchar += strlen (nextchar);
 		  optopt = pfound->val;
-		  return optstring[0] == ':' ? ':' : '?';
+		  return optstring[0] == ':' ? ':' : 'h';
 		}
 	    }
 	  nextchar += strlen (nextchar);
@@ -765,7 +765,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	  nextchar = (char *) "";
 	  optind++;
 	  optopt = 0;
-	  return '?';
+	  return 'h';
 	}
     }
 
@@ -792,7 +792,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		       argv[0], c);
 	  }
 	optopt = c;
-	return '?';
+	return 'h';
       }
     /* Convenience. Treat POSIX -W foo same as long option --foo */
     if (temp[0] == 'W' && temp[1] == ';')
@@ -825,7 +825,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 	    if (optstring[0] == ':')
 	      c = ':';
 	    else
-	      c = '?';
+	      c = 'h';
 	    return c;
 	  }
 	else
@@ -869,7 +869,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		       argv[0], argv[optind]);
 	    nextchar += strlen (nextchar);
 	    optind++;
-	    return '?';
+	    return 'h';
 	  }
 	if (pfound != NULL)
 	  {
@@ -888,7 +888,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 			       argv[0], pfound->name);
 
 		    nextchar += strlen (nextchar);
-		    return '?';
+		    return 'h';
 		  }
 	      }
 	    else if (pfound->has_arg == 1)
@@ -902,7 +902,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 			       _("%s: option `%s' requires an argument\n"),
 			       argv[0], argv[optind - 1]);
 		    nextchar += strlen (nextchar);
-		    return optstring[0] == ':' ? ':' : '?';
+		    return optstring[0] == ':' ? ':' : 'h';
 		  }
 	      }
 	    nextchar += strlen (nextchar);
@@ -955,7 +955,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 		if (optstring[0] == ':')
 		  c = ':';
 		else
-		  c = '?';
+		  c = 'h';
 	      }
 	    else
 	      /* We already incremented `optind' once;
@@ -1033,7 +1033,7 @@ main (argc, argv)
 	  printf ("option c with value `%s'\n", optarg);
 	  break;
 
-	case '?':
+	case 'h':
 	  break;
 
 	default:
