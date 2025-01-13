@@ -1,3 +1,7 @@
+0.4.7
+-----
+- add support for the "more common" -h switch for printing help
+
 0.4.6
 -----
 - better deuplicate entry detection on linux and bsd
