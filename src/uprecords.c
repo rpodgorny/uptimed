@@ -489,10 +489,11 @@ void scan_args(int argc, char *argv[])
 {
 	int i;
 
-	while((i = getopt(argc, argv, "i:m:hacbdBkKfsMwv")) != EOF)
+	while((i = getopt(argc, argv, "i:m:?hacbdBkKfsMwv")) != EOF)
 	{
 		switch(i)
 		{
+				case '?':
 				case 'h':
 #ifdef __ANDROID__
 						fputc('\n', stderr);
