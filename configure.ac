@@ -12,7 +12,9 @@ case "$host" in
     PKG_PROG_PKG_CONFIG
     AC_ARG_WITH([systemdsystemunitdir],
         AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
-        [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
+        [],
+        [with_systemdsystemunitdir=$(test -n "$PKG_CONFIG" && $PKG_CONFIG --variable=systemdsystemunitdir systemd || echo no)]
+    )
         if test "x$with_systemdsystemunitdir" != xno; then
             AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
             AC_OUTPUT([etc/uptimed.service])
